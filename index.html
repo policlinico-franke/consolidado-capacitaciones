@@ -2,87 +2,86 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reporte de Capacitaciones - Minera Las Cenizas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumplimiento Cursos Obligatorios 2026 - Las Cenizas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f4f4f4; text-align: center; }
-        .slide { min-height: 100vh; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 900px; }
-        .photo-card { width: 100%; height: 200px; background: #e0e0e0; border-radius: 8px; border: 2px dashed #bbb; display: flex; align-items: center; justify-content: center; color: #777; font-size: 12px; }
-        .photo-grid img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
-        h2 { color: #333; margin-bottom: 30px; }
+        body { font-family: 'Inter', sans-serif; background-color: #f7f6f5; color: #2D2D2D; overflow-x: hidden; }
+        :root { --copper-dark: #8C4F1A; --copper-primary: #A65E2E; --copper-light: #D98A29; --copper-oxidized: #3B7A80; }
+        .double-copper-line { position: relative; height: 6px; width: 100%; background: transparent; }
+        .double-copper-line::before, .double-copper-line::after { content: ''; position: absolute; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--copper-dark), var(--copper-light)); }
+        .double-copper-line::before { top: 0; }
+        .double-copper-line::after { bottom: 0; }
+        .slide { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: none; }
+        .slide.active { display: flex; animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        .photo-box { height: 150px; background: #f9f9f9; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999; font-size: 11px; border-radius: 8px; }
+        .input-realizados { background-color: rgba(255, 255, 255, 0.9); border: 1px solid #D1D5DB; transition: all 0.2s ease; }
+        .seal-container { border: 4px double var(--copper-dark); border-radius: 50%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 800; color: var(--copper-dark); position: relative; transform: rotate(-5deg); box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: rgba(253, 252, 251, 0.9); }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Función para manejar fotos inexistentes -->
+    <header class="w-full bg-white shadow-sm z-10">
+        <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-sm font-extrabold text-gray-800 uppercase">Grupo Minero Las Cenizas</h1>
+            <span class="text-xs font-semibold text-gray-500 uppercase">Presentación Corporativa</span>
+        </div>
+        <div class="double-copper-line"></div>
+    </header>
+
+    <main class="flex-grow max-w-[1400px] w-full mx-auto px-4 py-6">
+        <!-- Diapositivas originales (1 a 4) -->
+        <section id="slide-1" class="slide active flex-col text-center py-10"><h1>Portada</h1></section>
+        <section id="slide-2" class="slide flex-col"><h2>Dashboard</h2></section>
+        <section id="slide-3" class="slide flex-col"><h2>Tabla 1</h2></section>
+        <section id="slide-4" class="slide flex-col"><h2>Tabla 2</h2></section>
+
+        <!-- Diapositivas de Fotos Integradas -->
+        <section id="slide-5" class="slide bg-white p-8 rounded shadow flex-col">
+            <h2 class="text-2xl font-bold mb-4">Registro: Primeros Auxilios</h2>
+            <div class="photo-grid"><div class="photo-box">auxilios1.jpg</div><div class="photo-box">auxilios2.jpg</div><div class="photo-box">auxilios3.jpg</div><div class="photo-box">auxilios4.jpg</div><div class="photo-box">auxilios5.jpg</div><div class="photo-box">auxilios6.jpg</div></div>
+        </section>
+
+        <section id="slide-6" class="slide bg-white p-8 rounded shadow flex-col">
+            <h2 class="text-2xl font-bold mb-4">Registro: Uso de Extintores</h2>
+            <div class="photo-grid"><div class="photo-box">extintor1.jpg</div><div class="photo-box">extintor2.jpg</div><div class="photo-box">extintor3.jpg</div><div class="photo-box">extintor4.jpg</div><div class="photo-box">extintor5.jpg</div><div class="photo-box">extintor6.jpg</div></div>
+        </section>
+
+        <section id="slide-7" class="slide bg-white p-8 rounded shadow flex-col">
+            <h2 class="text-2xl font-bold mb-4">Registro: Manejo de Trauma</h2>
+            <div class="photo-grid"><div class="photo-box">trauma1.jpg</div><div class="photo-box">trauma2.jpg</div><div class="photo-box">trauma3.jpg</div><div class="photo-box">trauma4.jpg</div><div class="photo-box">trauma5.jpg</div><div class="photo-box">trauma6.jpg</div></div>
+        </section>
+
+        <section id="slide-8" class="slide bg-white p-8 rounded shadow flex-col">
+            <h2 class="text-2xl font-bold mb-4">Registro: Sustancias Peligrosas</h2>
+            <div class="photo-grid"><div class="photo-box">sustancias1.jpg</div><div class="photo-box">sustancias2.jpg</div><div class="photo-box">sustancias3.jpg</div><div class="photo-box">sustancias4.jpg</div><div class="photo-box">sustancias5.jpg</div><div class="photo-box">sustancias6.jpg</div></div>
+        </section>
+        
+        <!-- Diapositiva final -->
+        <section id="slide-9" class="slide flex-col"><h2>Conclusiones</h2></section>
+    </main>
+
+    <footer class="w-full bg-white border-t border-gray-200 py-4 text-center">
+        <button onclick="changeSlide(-1)" class="px-4 py-2 bg-gray-200 rounded">Anterior</button>
+        <span id="slide-indicator" class="mx-4 font-bold">1 / 9</span>
+        <button onclick="changeSlide(1)" class="px-4 py-2 bg-[#8C4F1A] text-white rounded">Siguiente</button>
+    </footer>
+
     <script>
-        function checkImage(img) {
-            if (img.naturalWidth === 0) {
-                img.style.display = 'none';
-                img.nextElementSibling.style.display = 'flex';
-            }
+        let activeSlideIndex = 1;
+        const totalSlides = 9;
+
+        function changeSlide(direction) {
+            document.getElementById(`slide-${activeSlideIndex}`).classList.remove('active');
+            activeSlideIndex = Math.max(1, Math.min(totalSlides, activeSlideIndex + direction));
+            document.getElementById(`slide-${activeSlideIndex}`).classList.add('active');
+            document.getElementById('slide-indicator').innerText = `${activeSlideIndex} / ${totalSlides}`;
         }
     </script>
-
-    <!-- Diapositiva 1: Primeros Auxilios -->
-    <section class="slide">
-        <h2>Primeros Auxilios</h2>
-        <div class="photo-grid">
-            <script>
-                for(let i=1; i<=6; i++) {
-                    document.write(`
-                        <img src="auxilios${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="photo-card" style="display:none">auxilios${i}.jpg (Pendiente)</div>
-                    `);
-                }
-            </script>
-        </div>
-    </section>
-
-    <!-- Diapositiva 2: Uso de Extintores -->
-    <section class="slide">
-        <h2>Uso de Extintores</h2>
-        <div class="photo-grid">
-            <script>
-                for(let i=1; i<=6; i++) {
-                    document.write(`
-                        <img src="extintor${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="photo-card" style="display:none">extintor${i}.jpg (Pendiente)</div>
-                    `);
-                }
-            </script>
-        </div>
-    </section>
-
-    <!-- Diapositiva 3: Manejo de Trauma -->
-    <section class="slide">
-        <h2>Manejo de Trauma</h2>
-        <div class="photo-grid">
-            <script>
-                for(let i=1; i<=6; i++) {
-                    document.write(`
-                        <img src="trauma${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="photo-card" style="display:none">trauma${i}.jpg (Pendiente)</div>
-                    `);
-                }
-            </script>
-        </div>
-    </section>
-
-    <!-- Diapositiva 4: Sustancias Peligrosas -->
-    <section class="slide">
-        <h2>Sustancias Peligrosas</h2>
-        <div class="photo-grid">
-            <script>
-                for(let i=1; i<=6; i++) {
-                    document.write(`
-                        <img src="sustancias${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                        <div class="photo-card" style="display:none">sustancias${i}.jpg (Pendiente)</div>
-                    `);
-                }
-            </script>
-        </div>
-    </section>
-
 </body>
 </html>

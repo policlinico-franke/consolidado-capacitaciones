@@ -4,25 +4,38 @@
     <meta charset="UTF-8">
     <title>Reporte de Capacitaciones - Minera Las Cenizas</title>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
-        .slide { height: 100vh; padding: 40px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background: #f4f4f4; text-align: center; }
+        .slide { min-height: 100vh; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 900px; }
-        .photo-grid img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid #ddd; }
-        h2 { color: #333; margin-bottom: 20px; }
+        .photo-card { width: 100%; height: 200px; background: #e0e0e0; border-radius: 8px; border: 2px dashed #bbb; display: flex; align-items: center; justify-content: center; color: #777; font-size: 12px; }
+        .photo-grid img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+        h2 { color: #333; margin-bottom: 30px; }
     </style>
 </head>
 <body>
+
+    <!-- Función para manejar fotos inexistentes -->
+    <script>
+        function checkImage(img) {
+            if (img.naturalWidth === 0) {
+                img.style.display = 'none';
+                img.nextElementSibling.style.display = 'flex';
+            }
+        }
+    </script>
 
     <!-- Diapositiva 1: Primeros Auxilios -->
     <section class="slide">
         <h2>Primeros Auxilios</h2>
         <div class="photo-grid">
-            <img src="auxilios1.jpg" alt="Foto 1">
-            <img src="auxilios2.jpg" alt="Foto 2">
-            <img src="auxilios3.jpg" alt="Foto 3">
-            <img src="auxilios4.jpg" alt="Foto 4">
-            <img src="auxilios5.jpg" alt="Foto 5">
-            <img src="auxilios6.jpg" alt="Foto 6">
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <img src="auxilios${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="photo-card" style="display:none">auxilios${i}.jpg (Pendiente)</div>
+                    `);
+                }
+            </script>
         </div>
     </section>
 
@@ -30,12 +43,14 @@
     <section class="slide">
         <h2>Uso de Extintores</h2>
         <div class="photo-grid">
-            <img src="extintor1.jpg" alt="Foto 1">
-            <img src="extintor2.jpg" alt="Foto 2">
-            <img src="extintor3.jpg" alt="Foto 3">
-            <img src="extintor4.jpg" alt="Foto 4">
-            <img src="extintor5.jpg" alt="Foto 5">
-            <img src="extintor6.jpg" alt="Foto 6">
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <img src="extintor${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="photo-card" style="display:none">extintor${i}.jpg (Pendiente)</div>
+                    `);
+                }
+            </script>
         </div>
     </section>
 
@@ -43,12 +58,14 @@
     <section class="slide">
         <h2>Manejo de Trauma</h2>
         <div class="photo-grid">
-            <img src="trauma1.jpg" alt="Foto 1">
-            <img src="trauma2.jpg" alt="Foto 2">
-            <img src="trauma3.jpg" alt="Foto 3">
-            <img src="trauma4.jpg" alt="Foto 4">
-            <img src="trauma5.jpg" alt="Foto 5">
-            <img src="trauma6.jpg" alt="Foto 6">
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <img src="trauma${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="photo-card" style="display:none">trauma${i}.jpg (Pendiente)</div>
+                    `);
+                }
+            </script>
         </div>
     </section>
 
@@ -56,12 +73,14 @@
     <section class="slide">
         <h2>Sustancias Peligrosas</h2>
         <div class="photo-grid">
-            <img src="sustancias1.jpg" alt="Foto 1">
-            <img src="sustancias2.jpg" alt="Foto 2">
-            <img src="sustancias3.jpg" alt="Foto 3">
-            <img src="sustancias4.jpg" alt="Foto 4">
-            <img src="sustancias5.jpg" alt="Foto 5">
-            <img src="sustancias6.jpg" alt="Foto 6">
+            <script>
+                for(let i=1; i<=6; i++) {
+                    document.write(`
+                        <img src="sustancias${i}.jpg" onload="checkImage(this)" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                        <div class="photo-card" style="display:none">sustancias${i}.jpg (Pendiente)</div>
+                    `);
+                }
+            </script>
         </div>
     </section>
 

@@ -4,83 +4,920 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cumplimiento Cursos Obligatorios 2026 - Las Cenizas</title>
+    <!-- Tailwind CSS para el diseño responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter para una tipografía ultra profesional -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos de soporte -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f7f6f5; color: #2D2D2D; overflow-x: hidden; }
-        :root { --copper-dark: #8C4F1A; --copper-primary: #A65E2E; --copper-light: #D98A29; --copper-oxidized: #3B7A80; }
-        .double-copper-line { position: relative; height: 6px; width: 100%; background: transparent; }
-        .double-copper-line::before, .double-copper-line::after { content: ''; position: absolute; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--copper-dark), var(--copper-light)); }
-        .double-copper-line::before { top: 0; }
-        .double-copper-line::after { bottom: 0; }
-        .slide { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); display: none; }
-        .slide.active { display: flex; animation: fadeIn 0.6s ease-out forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        .photo-box { height: 150px; background: #f9f9f9; border: 2px dashed #ccc; display: flex; align-items: center; justify-content: center; color: #999; font-size: 11px; border-radius: 8px; }
-        .input-realizados { background-color: rgba(255, 255, 255, 0.9); border: 1px solid #D1D5DB; transition: all 0.2s ease; }
-        .seal-container { border: 4px double var(--copper-dark); border-radius: 50%; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-weight: 800; color: var(--copper-dark); position: relative; transform: rotate(-5deg); box-shadow: 0 4px 10px rgba(0,0,0,0.05); background-color: rgba(253, 252, 251, 0.9); }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f6f5;
+            color: #2D2D2D;
+            overflow-x: hidden;
+        }
+
+        /* Colores corporativos basados en cobre */
+        :root {
+            --copper-dark: #8C4F1A;
+            --copper-primary: #A65E2E;
+            --copper-light: #D98A29;
+            --copper-oxidized: #3B7A80; /* Tono turquesa del cobre oxidado */
+            --bg-slide: #FAFAFA;
+        }
+
+        /* Doble línea de cobre de la plantilla original */
+        .double-copper-line {
+            position: relative;
+            height: 6px;
+            width: 100%;
+            background: transparent;
+        }
+        .double-copper-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--copper-dark), var(--copper-light));
+        }
+        .double-copper-line::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--copper-dark), var(--copper-light));
+        }
+
+        /* Marca de agua concéntrica del logo Cenizas en el fondo */
+        .watermark-bg {
+            background-image: radial-gradient(circle, rgba(140, 79, 26, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+            position: relative;
+        }
+        .watermark-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70%;
+            height: auto;
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Transiciones suaves de las diapositivas */
+        .slide {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+        }
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Input dinámico estilo corporativo */
+        .input-realizados {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #D1D5DB;
+            transition: all 0.2s ease;
+        }
+        .input-realizados:focus {
+            outline: none;
+            border-color: var(--copper-primary);
+            box-shadow: 0 0 0 2px rgba(166, 94, 46, 0.2);
+            background-color: #FFF;
+        }
+
+        /* Barra de progreso interactiva */
+        .progress-bar-fill {
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Estilo sello de bronce original */
+        .seal-container {
+            border: 4px double var(--copper-dark);
+            border-radius: 50%;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: 800;
+            color: var(--copper-dark);
+            position: relative;
+            transform: rotate(-5deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background-color: rgba(253, 252, 251, 0.9);
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
+<body class="watermark-bg min-h-screen flex flex-col justify-between">
 
     <header class="w-full bg-white shadow-sm z-10">
         <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-sm font-extrabold text-gray-800 uppercase">Grupo Minero Las Cenizas</h1>
-            <span class="text-xs font-semibold text-gray-500 uppercase">Presentación Corporativa</span>
+            <div class="flex items-center space-x-3">
+                <svg class="h-10 w-10 flex-shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="logoCopperGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6F3B13" />
+                            <stop offset="30%" stop-color="#9E5924" />
+                            <stop offset="70%" stop-color="#C57E37" />
+                            <stop offset="100%" stop-color="#E8A34A" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Banda exterior hexagonal -->
+                    <path d="M 78 28 L 50 12 L 20 28 L 20 72 L 50 88 L 78 72" 
+                          stroke="url(#logoCopperGrad)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <!-- Banda media hexagonal -->
+                    <path d="M 70 36 L 50 24 L 31 36 L 31 64 L 50 76 L 70 64" 
+                          stroke="url(#logoCopperGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <!-- Banda interior hexagonal -->
+                    <path d="M 62 44 L 50 36 L 42 44 L 42 56 L 50 64 L 62 56" 
+                          stroke="url(#logoCopperGrad)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
+                <div>
+                    <h1 class="text-sm font-extrabold tracking-wider text-gray-800 uppercase">Grupo Minero</h1>
+                    <h2 class="text-xs font-bold tracking-widest text-[#8C4F1A] uppercase">Las Cenizas</h2>
+                </div>
+            </div>
+            
+            <!-- Muestra del Estado de Diapositiva Actual -->
+            <div class="flex items-center space-x-6">
+                <span class="text-xs font-semibold tracking-wider text-gray-500 uppercase">Presentación Corporativa</span>
+                <!-- Tres cuadrados de la plantilla original (turquesa, marrón, naranja cobre) -->
+                <div class="flex space-x-1.5">
+                    <div class="w-4 h-4 rounded-sm shadow-sm bg-[#3B7A80]"></div>
+                    <div class="w-4 h-4 rounded-sm shadow-sm bg-[#8C4F1A]"></div>
+                    <div class="w-4 h-4 rounded-sm shadow-sm bg-[#D98A29]"></div>
+                </div>
+            </div>
         </div>
+        <!-- Doble Línea de Cobre Original -->
         <div class="double-copper-line"></div>
     </header>
 
-    <main class="flex-grow max-w-[1400px] w-full mx-auto px-4 py-6">
-        <!-- Diapositivas originales (1 a 4) -->
-        <section id="slide-1" class="slide active flex-col text-center py-10"><h1>Portada</h1></section>
-        <section id="slide-2" class="slide flex-col"><h2>Dashboard</h2></section>
-        <section id="slide-3" class="slide flex-col"><h2>Tabla 1</h2></section>
-        <section id="slide-4" class="slide flex-col"><h2>Tabla 2</h2></section>
-
-        <!-- Diapositivas de Fotos Integradas -->
-        <section id="slide-5" class="slide bg-white p-8 rounded shadow flex-col">
-            <h2 class="text-2xl font-bold mb-4">Registro: Primeros Auxilios</h2>
-            <div class="photo-grid"><div class="photo-box">auxilios1.jpg</div><div class="photo-box">auxilios2.jpg</div><div class="photo-box">auxilios3.jpg</div><div class="photo-box">auxilios4.jpg</div><div class="photo-box">auxilios5.jpg</div><div class="photo-box">auxilios6.jpg</div></div>
-        </section>
-
-        <section id="slide-6" class="slide bg-white p-8 rounded shadow flex-col">
-            <h2 class="text-2xl font-bold mb-4">Registro: Uso de Extintores</h2>
-            <div class="photo-grid"><div class="photo-box">extintor1.jpg</div><div class="photo-box">extintor2.jpg</div><div class="photo-box">extintor3.jpg</div><div class="photo-box">extintor4.jpg</div><div class="photo-box">extintor5.jpg</div><div class="photo-box">extintor6.jpg</div></div>
-        </section>
-
-        <section id="slide-7" class="slide bg-white p-8 rounded shadow flex-col">
-            <h2 class="text-2xl font-bold mb-4">Registro: Manejo de Trauma</h2>
-            <div class="photo-grid"><div class="photo-box">trauma1.jpg</div><div class="photo-box">trauma2.jpg</div><div class="photo-box">trauma3.jpg</div><div class="photo-box">trauma4.jpg</div><div class="photo-box">trauma5.jpg</div><div class="photo-box">trauma6.jpg</div></div>
-        </section>
-
-        <section id="slide-8" class="slide bg-white p-8 rounded shadow flex-col">
-            <h2 class="text-2xl font-bold mb-4">Registro: Sustancias Peligrosas</h2>
-            <div class="photo-grid"><div class="photo-box">sustancias1.jpg</div><div class="photo-box">sustancias2.jpg</div><div class="photo-box">sustancias3.jpg</div><div class="photo-box">sustancias4.jpg</div><div class="photo-box">sustancias5.jpg</div><div class="photo-box">sustancias6.jpg</div></div>
-        </section>
+    <main class="flex-grow max-w-[1400px] w-full mx-auto px-4 md:px-6 py-6 flex flex-col justify-center relative">
         
-        <!-- Diapositiva final -->
-        <section id="slide-9" class="slide flex-col"><h2>Conclusiones</h2></section>
+        <svg class="watermark-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 78 28 L 50 12 L 20 28 L 20 72 L 50 88 L 78 72" stroke="#8C4F1A" stroke-width="11" stroke-linecap="round" stroke-linejoin="round" opacity="0.03" />
+            <path d="M 70 36 L 50 24 L 31 36 L 31 64 L 50 76 L 70 64" stroke="#8C4F1A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" opacity="0.03" />
+            <path d="M 62 44 L 50 36 L 42 44 L 42 56 L 50 64 L 62 56" stroke="#8C4F1A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" opacity="0.03" />
+        </svg>
+
+        <!-- ================= DIAPOSITIVA 1: PORTADA ================= -->
+        <section id="slide-1" class="slide active flex-col items-center justify-center text-center py-10 z-10">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <!-- Sello Oficial Rediseñado en SVG/HTML -->
+                <div class="flex justify-center mb-4">
+                    <div class="seal-container w-44 h-44 p-4 border-2">
+                        <span class="text-[10px] tracking-widest uppercase font-bold text-amber-900">EMPRESAS</span>
+                        <div class="my-1 text-base font-black tracking-wider bg-amber-800 text-white px-3 py-1.5 rounded transform uppercase scale-105">
+                            CUMPLIMIENTO
+                        </div>
+                        <span class="text-[9px] tracking-widest uppercase font-bold text-amber-900">CONTRATISTAS</span>
+                        <div class="flex space-x-1 mt-1 text-[8px] text-amber-700">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <span class="px-4 py-1.5 bg-amber-100 text-[#8C4F1A] text-xs font-bold tracking-widest rounded-full uppercase">
+                        REPORTE DE CAPACITACIÓN 2026
+                    </span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900">
+                        Cumplimiento de Cursos Obligatorios
+                    </h1>
+                    <p class="text-lg text-gray-600 max-w-2xl mx-auto font-light">
+                        Seguimiento y avance de dotación entrenada en Seguridad, Salud Ocupacional y Manejo de Emergencias para Empresas Colaboradoras.
+                    </p>
+                </div>
+
+                <!-- Lista de Principales Contratistas -->
+                <div class="pt-8 border-t border-gray-200">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">Principales Colaboradores en Faena</p>
+                    <div class="flex flex-wrap justify-center gap-6 text-sm font-semibold text-gray-600">
+                        <span class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100"><i class="fa-solid fa-truck-pickup text-[#8C4F1A]"></i> <span>Sotramin</span></span>
+                        <span class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100"><i class="fa-solid fa-gears text-[#3B7A80]"></i> <span>Rentamaq</span></span>
+                        <span class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100"><i class="fa-solid fa-utensils text-[#D98A29]"></i> <span>Newrest</span></span>
+                        <span class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100"><i class="fa-solid fa-helmet-safety text-gray-500"></i> <span>Warner SpA</span></span>
+                        <span class="flex items-center space-x-2 bg-white px-3 py-1.5 rounded-lg shadow-sm border border-gray-100"><i class="fa-solid fa-shield text-[#8C4F1A]"></i> <span>Hefaistos</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 2: DASHBOARD GLOBAL ================= -->
+        <section id="slide-2" class="slide flex-col space-y-6 z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-gray-200 pb-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-gray-900">Cuadro de Mando Ejecutivo</h2>
+                    <p class="text-sm text-gray-500">Métricas consolidadas de las 24 empresas colaboradoras (Actualización en Tiempo Real)</p>
+                </div>
+                <div class="mt-2 md:mt-0 bg-amber-50 border border-amber-200 rounded-lg p-2 flex items-center space-x-2 text-xs text-[#8C4F1A] font-medium">
+                    <i class="fa-solid fa-circle-info animate-pulse"></i>
+                    <span>¡Prueba a editar los datos en las siguientes diapositivas y observa cómo cambia este dashboard!</span>
+                </div>
+            </div>
+
+            <!-- Tarjetas de Métricas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+                    <div class="p-3 bg-amber-50 rounded-lg text-[#8C4F1A] text-2xl"><i class="fa-solid fa-users"></i></div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Dotación Total</p>
+                        <p id="stat-total-dotacion" class="text-2xl font-bold text-gray-800">770</p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+                    <div class="p-3 bg-green-50 rounded-lg text-green-600 text-2xl"><i class="fa-solid fa-circle-check"></i></div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Total Realizados</p>
+                        <p id="stat-total-realizados" class="text-2xl font-bold text-gray-800">0</p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+                    <div class="p-3 bg-red-50 rounded-lg text-red-600 text-2xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Total Pendientes</p>
+                        <p id="stat-total-pendientes" class="text-2xl font-bold text-gray-800">0</p>
+                    </div>
+                </div>
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
+                    <div class="p-3 bg-cyan-50 rounded-lg text-[#3B7A80] text-2xl"><i class="fa-solid fa-chart-line"></i></div>
+                    <div>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Avance Promedio</p>
+                        <p id="stat-global-porcentaje" class="text-2xl font-bold text-gray-800">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico de Cumplimiento por Cursos -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Tarjeta Gráfico -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-4">Avance por Curso Obligatorio</h3>
+                    <div class="space-y-4" id="course-progress-container">
+                        <!-- P. Auxilios -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-gray-700">Primeros Auxilios</span>
+                                <span id="progress-val-1" class="text-[#8C4F1A]">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                <div id="progress-bar-1" class="bg-[#8C4F1A] h-full rounded-full progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <!-- Uso Extintores -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-gray-700">Uso de Extintores</span>
+                                <span id="progress-val-2" class="text-[#3B7A80]">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                <div id="progress-bar-2" class="bg-[#3B7A80] h-full rounded-full progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <!-- Manejo Trauma -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-gray-700">Manejo de Trauma</span>
+                                <span id="progress-val-3" class="text-[#D98A29]">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                <div id="progress-bar-3" class="bg-[#D98A29] h-full rounded-full progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <!-- Sust. Peligrosas -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs font-semibold">
+                                <span class="text-gray-700">Sustancias Peligrosas</span>
+                                <span id="progress-val-4" class="text-gray-600">0%</span>
+                            </div>
+                            <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                <div id="progress-bar-4" class="bg-gray-600 h-full rounded-full progress-bar-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Alertas/Recomendaciones -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 mb-3">Alertas Operacionales</h3>
+                        <div id="dashboard-alerts" class="space-y-2 text-xs overflow-y-auto max-h-[160px] pr-2">
+                            <!-- Inyectado dinámicamente -->
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500">
+                        <span>Meta Corporativa: 100% de la Dotación</span>
+                        <span class="font-bold text-green-600"><i class="fa-solid fa-flag"></i> Faena Segura</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 3: TABLA INTERACTIVA PARTE 1 ================= -->
+        <section id="slide-3" class="slide flex-col space-y-4 z-10 w-full">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900">Control de Cumplimiento (1 - 12)</h2>
+                    <p class="text-xs text-gray-500">Haz doble clic e ingresa números en "Realizados" para calcular automáticamente la Pendiente y el %.</p>
+                </div>
+                <div class="text-xs font-semibold text-[#8C4F1A] bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                    Sotramin a Amffal
+                </div>
+            </div>
+
+            <!-- Tabla de datos responsiva y scrollable horizontalmente -->
+            <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm max-h-[420px]">
+                <table class="min-w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-[10px] font-extrabold uppercase tracking-wider text-gray-500 border-b border-gray-200">
+                            <th class="px-3 py-3 sticky left-0 bg-gray-50 z-10" style="width: 15%">Empresa Colaboradora</th>
+                            <th class="px-2 py-3 text-center bg-amber-50/50" style="width: 5%">Dot.</th>
+                            <th class="px-2 py-3 text-center bg-red-50/50" style="width: 20%">Primeros Auxilios</th>
+                            <th class="px-2 py-3 text-center bg-blue-50/50" style="width: 20%">Uso Extintores</th>
+                            <th class="px-2 py-3 text-center bg-orange-50/50" style="width: 20%">Manejo Trauma</th>
+                            <th class="px-2 py-3 text-center bg-teal-50/50" style="width: 20%">Sust. Peligrosas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-group-1" class="divide-y divide-gray-100 text-xs">
+                        <!-- Inyectado dinámicamente mediante JS para evitar redundancia -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 4: TABLA INTERACTIVA PARTE 2 ================= -->
+        <section id="slide-4" class="slide flex-col space-y-4 z-10 w-full">
+            <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+                <div>
+                    <h2 class="text-xl font-extrabold text-gray-900">Control de Cumplimiento (13 - 24)</h2>
+                    <p class="text-xs text-gray-500">Haz doble clic e ingresa números en "Realizados" para calcular automáticamente la Pendiente y el %.</p>
+                </div>
+                <div class="text-xs font-semibold text-[#3B7A80] bg-cyan-50 px-2.5 py-1 rounded-full border border-cyan-200">
+                    Pillado a Franke
+                </div>
+            </div>
+
+            <!-- Tabla de datos responsiva y scrollable horizontalmente -->
+            <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm max-h-[420px]">
+                <table class="min-w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 text-[10px] font-extrabold uppercase tracking-wider text-gray-500 border-b border-gray-200">
+                            <th class="px-3 py-3 sticky left-0 bg-gray-50 z-10" style="width: 15%">Empresa Colaboradora</th>
+                            <th class="px-2 py-3 text-center bg-amber-50/50" style="width: 5%">Dot.</th>
+                            <th class="px-2 py-3 text-center bg-red-50/50" style="width: 20%">Primeros Auxilios</th>
+                            <th class="px-2 py-3 text-center bg-blue-50/50" style="width: 20%">Uso Extintores</th>
+                            <th class="px-2 py-3 text-center bg-orange-50/50" style="width: 20%">Manejo Trauma</th>
+                            <th class="px-2 py-3 text-center bg-teal-50/50" style="width: 20%">Sust. Peligrosas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body-group-2" class="divide-y divide-gray-100 text-xs">
+                        <!-- Inyectado dinámicamente mediante JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 5: REGISTRO FOTOGRÁFICO - EXTINTORES ================= -->
+        <section id="slide-5" class="slide flex-col space-y-4 z-10">
+            <div class="border-b border-gray-200 pb-3">
+                <h2 class="text-xl font-extrabold text-gray-900">Registro Fotográfico - Prácticas de Combate contra Incendios</h2>
+                <p class="text-xs text-gray-500">Curso: Uso y Manejo Práctico de Extintores Portátiles en Terreno - Faena Franke</p>
+            </div>
+
+            <!-- Galería de fotos con estructura premium de portafotos de cobre -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=Teoria+Extintores+Las+Cenizas" alt="Módulo Teórico" class="object-cover w-full h-full" onerror="this.src='https://placehold.co/600x400/8C4F1A/FFF?text=Imagen+Cargando...'">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Módulo Teórico Grupal</p>
+                    <p class="text-[10px] text-gray-500">Charla técnica de seguridad de extintores en domo móvil de capacitación.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Practica+Fuego+Real+Las+Cenizas" alt="Práctica Fuego Real" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Práctica Extinción Fuego Directo</p>
+                    <p class="text-[10px] text-gray-500">Operadores de Tecnisec aplicando técnicas de barrido con extintor PQS de 10kg.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/D98A29/FFF?text=Certificacion+Cenizas" alt="Evaluación Final" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Evaluación en Terreno</p>
+                    <p class="text-[10px] text-gray-500">Instructores acreditados evaluando la efectividad de descarga y postura segura.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 6: REGISTRO FOTOGRÁFICO - PRIMEROS AUXILIOS ================= -->
+        <section id="slide-6" class="slide flex-col space-y-4 z-10">
+            <div class="border-b border-gray-200 pb-3">
+                <h2 class="text-xl font-extrabold text-gray-900">Registro Fotográfico - Entrenamiento de Primeros Auxilios</h2>
+                <p class="text-xs text-gray-500">Sesiones: RCP, Soporte Vital Básico y Protocolo de Emergencia - 06 y 07 de Junio de 2026</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=RCP+Entrenamiento" alt="RCP Maniquí" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Maniobras de RCP con Maniquí</p>
+                    <p class="text-[10px] text-gray-500">Prácticas de reanimación cardiopulmonar con control de ritmo asistido por instructor.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Uso+De+DEA+Cenizas" alt="Uso DEA" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Instrucción de Desfibrilador (DEA)</p>
+                    <p class="text-[10px] text-gray-500">Capacitación sobre el uso del desfibrilador automático externo ante sospecha de paro cardíaco.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/D98A29/FFF?text=Evaluacion+Teorica" alt="Evaluaciones" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Evaluación de Competencia Final</p>
+                    <p class="text-[10px] text-gray-500">Acreditación teórica e individual del módulo de emergencias de ACHS y SASER.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 7: REGISTRO FOTOGRÁFICO - TRAUMA / SUSTANCIAS ================= -->
+        <section id="slide-7" class="slide flex-col space-y-4 z-10">
+            <div class="border-b border-gray-200 pb-3">
+                <h2 class="text-xl font-extrabold text-gray-900">Registro Fotográfico - Trauma y Sustancias Peligrosas</h2>
+                <p class="text-xs text-gray-500">Módulos avanzados de inmovilización espinal y control de vertidos industriales.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=Inmovilizacion+Trauma" alt="Manejo Trauma" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Uso de Tabla Espinal Espoleta</p>
+                    <p class="text-[10px] text-gray-500">Simulación práctica de empaquetado e inmovilización rápida ante sospecha de fractura.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Kit+Spill+Quimicos" alt="Spill Kit" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">Uso de Kits de Contención de Derrames</p>
+                    <p class="text-[10px] text-gray-500">Técnicas de absorción rápida y cordones para delimitación de sustancias corrosivas en taller.</p>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
+                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
+                        <img src="https://placehold.co/600x400/D98A29/FFF?text=EPP+Quimicos" alt="EPP Sustancias" class="object-cover w-full h-full">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
+                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
+                        </div>
+                    </div>
+                    <p class="text-xs font-bold text-gray-700">EPP Químico Nivel B</p>
+                    <p class="text-[10px] text-gray-500">Revisión de trajes Tychem, máscaras full-face y guantes de nitrilo específicos para faena.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= DIAPOSITIVA 8: PLAN DE ACCIÓN Y CONCLUSIONES ================= -->
+        <section id="slide-8" class="slide flex-col space-y-6 z-10">
+            <div class="border-b border-gray-200 pb-3">
+                <h2 class="text-xl font-extrabold text-gray-900">Plan de Acción y Conclusiones Generales</h2>
+                <p class="text-xs text-gray-500">Próximos hitos de cumplimiento del programa integrado de capacitación de seguridad 2026.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tarjeta Objetivos -->
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 flex items-center space-x-2">
+                        <i class="fa-solid fa-bullseye text-[#8C4F1A]"></i>
+                        <span>Prioridades Inmediatas</span>
+                    </h3>
+                    <ul class="space-y-3 text-xs text-gray-600">
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-chevron-right text-[#8C4F1A] mt-0.5"></i>
+                            <span><strong>Empresas con Avance Cero:</strong> Contactar de urgencia a Verasay, Diexa y Transver para agendar cursos prácticos de Primeros Auxilios y Extintores de inmediato.</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-chevron-right text-[#8C4F1A] mt-0.5"></i>
+                            <span><strong>Programa Franke:</strong> Franke presenta la mayor dotación (129 operarios), priorizar el levantamiento de cobertura en Sustancias Peligrosas de forma secuencial.</span>
+                        </li>
+                        <li class="flex items-start space-x-2">
+                            <i class="fa-solid fa-chevron-right text-[#8C4F1A] mt-0.5"></i>
+                            <span><strong>Homologación Interna:</strong> Validar certificados vigentes presentados por ACHS, SASER y Adecco.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tarjeta Cierre / Firmas -->
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500">Consolidado Final</h3>
+                        <p class="text-xs text-gray-600 font-light">Este informe de cumplimiento es auditable ante la Dirección del Trabajo y el Servicio Nacional de Geología y Minería (Sernageomin).</p>
+                    </div>
+
+                    <!-- Botón Exportar / Guardar Avance -->
+                    <div class="pt-4 border-t border-gray-100 flex flex-col sm:flex-row gap-2">
+                        <button onclick="exportarCSV()" class="flex-grow flex items-center justify-center space-x-2 bg-[#8C4F1A] text-white hover:bg-[#A65E2E] py-2 px-4 rounded-lg text-xs font-bold shadow-sm transition">
+                            <i class="fa-solid fa-file-excel"></i>
+                            <span>Descargar Reporte en CSV</span>
+                        </button>
+                        <button onclick="resetData()" class="flex items-center justify-center space-x-2 bg-gray-100 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-lg text-xs font-semibold transition">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Reiniciar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="w-full bg-white border-t border-gray-200 py-4 text-center">
-        <button onclick="changeSlide(-1)" class="px-4 py-2 bg-gray-200 rounded">Anterior</button>
-        <span id="slide-indicator" class="mx-4 font-bold">1 / 9</span>
-        <button onclick="changeSlide(1)" class="px-4 py-2 bg-[#8C4F1A] text-white rounded">Siguiente</button>
+    <!-- ================= PANEL DE CONTROL INFERIOR ================= -->
+    <footer class="w-full bg-white border-t border-gray-200 z-10 py-4 shadow-inner">
+        <div class="max-w-[1400px] mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo pequeño en pie de página -->
+            <div class="flex items-center space-x-2 text-xs text-gray-400">
+                <i class="fa-solid fa-helmet-safety text-[#8C4F1A]"></i>
+                <span class="font-bold uppercase tracking-wider">Mina Las Cenizas</span>
+                <span>|</span>
+                <span>Depto. de Prevención de Riesgos</span>
+            </div>
+
+            <!-- Controles de Presentación -->
+            <div class="flex items-center space-x-4">
+                <button onclick="changeSlide(-1)" class="w-9 h-9 rounded-full bg-gray-50 hover:bg-gray-100 text-gray-600 flex items-center justify-center shadow border border-gray-200 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <span id="slide-indicator" class="text-xs font-black text-gray-700">1 / 8</span>
+                </div>
+                <button onclick="changeSlide(1)" class="w-9 h-9 rounded-full bg-[#8C4F1A] hover:bg-[#A65E2E] text-white flex items-center justify-center shadow transition">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Indicadores Visuales de Diapositivas (Puntos de salto rápido) -->
+            <div class="flex space-x-2">
+                <button onclick="goToSlide(1)" class="slide-dot w-2.5 h-2.5 rounded-full bg-amber-800" title="Portada"></button>
+                <button onclick="goToSlide(2)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Dashboard"></button>
+                <button onclick="goToSlide(3)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Tabla 1"></button>
+                <button onclick="goToSlide(4)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Tabla 2"></button>
+                <button onclick="goToSlide(5)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Fotos Extintores"></button>
+                <button onclick="goToSlide(6)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Fotos P. Auxilios"></button>
+                <button onclick="goToSlide(7)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Fotos Trauma"></button>
+                <button onclick="goToSlide(8)" class="slide-dot w-2.5 h-2.5 rounded-full bg-gray-300" title="Conclusiones"></button>
+            </div>
+        </div>
     </footer>
 
     <script>
-        let activeSlideIndex = 1;
-        const totalSlides = 9;
+        // Set de datos estructurado original de las 24 empresas colaboradoras
+        const initialDataset = [
+            { id: 1, name: "Sotramin", dot: 91, c1: 13, c2: 0, c3: 28, c4: 0 },
+            { id: 2, name: "Rentamaq", dot: 88, c1: 4,  c2: 0, c3: 5,  c4: 11 },
+            { id: 3, name: "Newrest",  dot: 78, c1: 56, c2: 0, c3: 5,  c4: 0 },
+            { id: 4, name: "Verasay",  dot: 30, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 5, name: "Warner",   dot: 41, c1: 17, c2: 4, c3: 5,  c4: 0 },
+            { id: 6, name: "Hefaistos",dot: 51, c1: 6,  c2: 0, c3: 2,  c4: 0 },
+            { id: 7, name: "Bureau V.",dot: 45, c1: 14, c2: 5, c3: 0,  c4: 13 },
+            { id: 8, name: "Diexa",    dot: 56, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 9, name: "Transver", dot: 10, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 10, name: "Sotrabus",dot: 15, c1: 0,  c2: 0, c3: 0,  c4: 3 },
+            { id: 11, name: "Adecco",  dot: 41, c1: 9,  c2: 6, c3: 8,  c4: 14 },
+            { id: 12, name: "Amffal",  dot: 18, c1: 10, c2: 1, c3: 8,  c4: 0 },
+            { id: 13, name: "Pillado", dot: 13, c1: 0,  c2: 0, c3: 0,  c4: 2 },
+            { id: 14, name: "Tecnisec",dot: 5,  c1: 4,  c2: 4, c3: 0,  c4: 0 },
+            { id: 15, name: "ACHS",    dot: 6,  c1: 6,  c2: 0, c3: 6,  c4: 0 },
+            { id: 16, name: "Saser",   dot: 6,  c1: 6,  c2: 6, c3: 6,  c4: 6 },
+            { id: 17, name: "Mitta",   dot: 5,  c1: 4,  c2: 2, c3: 2,  c4: 0 },
+            { id: 18, name: "V&C",     dot: 3,  c1: 2,  c2: 1, c3: 2,  c4: 0 },
+            { id: 19, name: "HSM",     dot: 14, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 20, name: "SCM",     dot: 13, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 21, name: "Perucci", dot: 2,  c1: 0,  c2: 0, c3: 2,  c4: 0 },
+            { id: 22, name: "Pertec",  dot: 10, c1: 0,  c2: 0, c3: 0,  c4: 0 },
+            { id: 23, name: "Sta. Elvira", dot: 7, c1: 5, c2: 2, c3: 0, c4: 0 },
+            { id: 24, name: "Franke",  dot: 129,c1: 0,  c2: 0, c3: 0,  c4: 16 }
+        ];
 
+        // Copia de trabajo para cambios reactivos en la presentación
+        let currentDataset = JSON.parse(JSON.stringify(initialDataset));
+        let activeSlideIndex = 1;
+        const totalSlides = 8;
+
+        // Renderiza el HTML de las tablas con inputs dinámicos en base a los datos
+        function renderTables() {
+            const container1 = document.getElementById('table-body-group-1');
+            const container2 = document.getElementById('table-body-group-2');
+            
+            container1.innerHTML = "";
+            container2.innerHTML = "";
+
+            currentDataset.forEach((company) => {
+                const targetContainer = (company.id <= 12) ? container1 : container2;
+                
+                // Cálculos automatizados dinámicos requeridos por el usuario
+                const p1 = Math.round((company.c1 / company.dot) * 100) || 0;
+                const p2 = Math.round((company.c2 / company.dot) * 100) || 0;
+                const p3 = Math.round((company.c3 / company.dot) * 100) || 0;
+                const p4 = Math.round((company.c4 / company.dot) * 100) || 0;
+
+                const pend1 = Math.max(0, company.dot - company.c1);
+                const pend2 = Math.max(0, company.dot - company.c2);
+                const pend3 = Math.max(0, company.dot - company.c3);
+                const pend4 = Math.max(0, company.dot - company.c4);
+
+                const row = document.createElement('tr');
+                row.className = "hover:bg-gray-50/80 transition border-b border-gray-100";
+                row.innerHTML = `
+                    <td class="px-3 py-2 sticky left-0 bg-white font-bold text-gray-800 border-r border-gray-100 shadow-[2px_0_5px_rgba(0,0,0,0.02)]">${company.id}. ${company.name}</td>
+                    <td class="px-2 py-2 text-center font-bold text-gray-700 bg-amber-50/20">${company.dot}</td>
+                    
+                    <!-- Curso 1: Primeros Auxilios -->
+                    <td class="px-2 py-1 bg-red-50/10 border-r border-gray-100">
+                        <div class="flex flex-col items-center">
+                            <input type="number" min="0" max="${company.dot}" value="${company.c1}" 
+                                onchange="updateCell(${company.id}, 'c1', this.value)" 
+                                class="w-12 text-center font-bold text-[#8C4F1A] rounded p-1 border input-realizados">
+                            <span class="text-[9px] text-gray-400 font-semibold mt-1">Pend: <span class="text-red-500">${pend1}</span> | <span class="font-bold text-gray-600">${p1}%</span></span>
+                        </div>
+                    </td>
+
+                    <!-- Curso 2: Uso Extintores -->
+                    <td class="px-2 py-1 bg-blue-50/10 border-r border-gray-100">
+                        <div class="flex flex-col items-center">
+                            <input type="number" min="0" max="${company.dot}" value="${company.c2}" 
+                                onchange="updateCell(${company.id}, 'c2', this.value)" 
+                                class="w-12 text-center font-bold text-[#3B7A80] rounded p-1 border input-realizados">
+                            <span class="text-[9px] text-gray-400 font-semibold mt-1">Pend: <span class="text-blue-500">${pend2}</span> | <span class="font-bold text-gray-600">${p2}%</span></span>
+                        </div>
+                    </td>
+
+                    <!-- Curso 3: Manejo Trauma -->
+                    <td class="px-2 py-1 bg-orange-50/10 border-r border-gray-100">
+                        <div class="flex flex-col items-center">
+                            <input type="number" min="0" max="${company.dot}" value="${company.c3}" 
+                                onchange="updateCell(${company.id}, 'c3', this.value)" 
+                                class="w-12 text-center font-bold text-[#D98A29] rounded p-1 border input-realizados">
+                            <span class="text-[9px] text-gray-400 font-semibold mt-1">Pend: <span class="text-orange-500">${pend3}</span> | <span class="font-bold text-gray-600">${p3}%</span></span>
+                        </div>
+                    </td>
+
+                    <!-- Curso 4: Sust. Peligrosas -->
+                    <td class="px-2 py-1 bg-teal-50/10">
+                        <div class="flex flex-col items-center">
+                            <input type="number" min="0" max="${company.dot}" value="${company.c4}" 
+                                onchange="updateCell(${company.id}, 'c4', this.value)" 
+                                class="w-12 text-center font-bold text-gray-700 rounded p-1 border input-realizados">
+                            <span class="text-[9px] text-gray-400 font-semibold mt-1">Pend: <span class="text-teal-600">${pend4}</span> | <span class="font-bold text-gray-600">${p4}%</span></span>
+                        </div>
+                    </td>
+                `;
+                targetContainer.appendChild(row);
+            });
+        }
+
+        // Gestiona las modificaciones interactivas
+        function updateCell(id, key, val) {
+            let numVal = parseInt(val);
+            if (isNaN(numVal) || numVal < 0) numVal = 0;
+            
+            const index = currentDataset.findIndex(c => c.id === id);
+            if (index !== -1) {
+                // Validación para evitar que "Realizados" supere la "Dotación"
+                if (numVal > currentDataset[index].dot) {
+                    numVal = currentDataset[index].dot;
+                }
+                currentDataset[index][key] = numVal;
+                renderTables();
+                calculateDashboardMetrics();
+            }
+        }
+
+        // Calcula métricas integradas para el Dashboard Ejecutivo
+        function calculateDashboardMetrics() {
+            let totalDot = 0;
+            let totalReal = 0;
+            
+            let c1_totalReal = 0;
+            let c2_totalReal = 0;
+            let c3_totalReal = 0;
+            let c4_totalReal = 0;
+
+            currentDataset.forEach(c => {
+                totalDot += c.dot;
+                totalReal += (c.c1 + c.c2 + c.c3 + c.c4);
+                
+                c1_totalReal += c.c1;
+                c2_totalReal += c.c2;
+                c3_totalReal += c.c3;
+                c4_totalReal += c.c4;
+            });
+
+            // Dotación Global Máxima de Cursos (4 cursos por cada empleado de la dotación)
+            const globalCapDotation = totalDot * 4;
+            const globalAvgPercentage = Math.round((totalReal / globalCapDotation) * 100);
+
+            // Actualizar Tarjetas Principales
+            document.getElementById('stat-total-dotacion').innerText = totalDot;
+            document.getElementById('stat-total-realizados').innerText = totalReal;
+            document.getElementById('stat-total-pendientes').innerText = globalCapDotation - totalReal;
+            document.getElementById('stat-global-porcentaje').innerText = `${globalAvgPercentage}%`;
+
+            // Calcular porcentajes por curso individual
+            const course1_pct = Math.round((c1_totalReal / totalDot) * 100);
+            const course2_pct = Math.round((c2_totalReal / totalDot) * 100);
+            const course3_pct = Math.round((c3_totalReal / totalDot) * 100);
+            const course4_pct = Math.round((c4_totalReal / totalDot) * 100);
+
+            // Actualizar Gráficos de Barra
+            document.getElementById('progress-val-1').innerText = `${course1_pct}%`;
+            document.getElementById('progress-bar-1').style.width = `${course1_pct}%`;
+
+            document.getElementById('progress-val-2').innerText = `${course2_pct}%`;
+            document.getElementById('progress-bar-2').style.width = `${course2_pct}%`;
+
+            document.getElementById('progress-val-3').innerText = `${course3_pct}%`;
+            document.getElementById('progress-bar-3').style.width = `${course3_pct}%`;
+
+            document.getElementById('progress-val-4').innerText = `${course4_pct}%`;
+            document.getElementById('progress-bar-4').style.width = `${course4_pct}%`;
+
+            // Motor de Alertas Operacionales Autónomo
+            generateAlerts(course1_pct, course2_pct, course3_pct, course4_pct);
+        }
+
+        // Genera alertas contextuales y recomendaciones en el Dashboard
+        function generateAlerts(p1, p2, p3, p4) {
+            const alertBox = document.getElementById('dashboard-alerts');
+            alertBox.innerHTML = "";
+
+            const courses = [
+                { name: "Primeros Auxilios", val: p1, color: "text-[#8C4F1A]" },
+                { name: "Uso de Extintores", val: p2, color: "text-[#3B7A80]" },
+                { name: "Manejo de Trauma", val: p3, color: "text-[#D98A29]" },
+                { name: "Sustancias Peligrosas", val: p4, color: "text-gray-600" }
+            ];
+
+            // Ordenar por menor porcentaje de cumplimiento primero
+            courses.sort((a,b) => a.val - b.val);
+
+            courses.forEach(c => {
+                let alertItem = document.createElement('div');
+                alertItem.className = "p-2 rounded border bg-gray-50 flex items-center space-x-2";
+                
+                if (c.val < 40) {
+                    alertItem.classList.add('border-red-100', 'bg-red-50/50');
+                    alertItem.innerHTML = `
+                        <i class="fa-solid fa-triangle-exclamation text-red-500 flex-shrink-0"></i>
+                        <span class="text-gray-700"><strong>Crítico:</strong> El curso <strong>${c.name}</strong> está en un <span class="font-extrabold text-red-600">${c.val}%</span> de avance. Se requiere programar cursos grupales.</span>
+                    `;
+                } else if (c.val < 80) {
+                    alertItem.classList.add('border-amber-100', 'bg-amber-50/50');
+                    alertItem.innerHTML = `
+                        <i class="fa-solid fa-triangle-exclamation text-amber-500 flex-shrink-0"></i>
+                        <span class="text-gray-700"><strong>En progreso:</strong> El curso <strong>${c.name}</strong> registra un <span class="font-semibold text-amber-700">${c.val}%</span>. Agendar personal pendiente.</span>
+                    `;
+                } else {
+                    alertItem.classList.add('border-green-100', 'bg-green-50/50');
+                    alertItem.innerHTML = `
+                        <i class="fa-solid fa-circle-check text-green-500 flex-shrink-0"></i>
+                        <span class="text-gray-700"><strong>Excelente:</strong> El curso <strong>${c.name}</strong> alcanza <span class="font-semibold text-green-700">${c.val}%</span> de cumplimiento general.</span>
+                    `;
+                }
+                alertBox.appendChild(alertItem);
+            });
+        }
+
+        // Control de navegación de Diapositivas
         function changeSlide(direction) {
+            let nextIndex = activeSlideIndex + direction;
+            if (nextIndex >= 1 && nextIndex <= totalSlides) {
+                goToSlide(nextIndex);
+            }
+        }
+
+        function goToSlide(index) {
+            // Desactivar diapositiva activa anterior
             document.getElementById(`slide-${activeSlideIndex}`).classList.remove('active');
-            activeSlideIndex = Math.max(1, Math.min(totalSlides, activeSlideIndex + direction));
-            document.getElementById(`slide-${activeSlideIndex}`).classList.add('active');
-            document.getElementById('slide-indicator').innerText = `${activeSlideIndex} / ${totalSlides}`;
+            
+            // Activar nueva diapositiva
+            document.getElementById(`slide-${index}`).classList.add('active');
+            activeSlideIndex = index;
+
+            // Actualizar indicador textual
+            document.getElementById('slide-indicator').innerText = `${index} / ${totalSlides}`;
+
+            // Actualizar dots de navegación
+            const dots = document.querySelectorAll('.slide-dot');
+            dots.forEach((dot, idx) => {
+                if (idx + 1 === index) {
+                    dot.className = "slide-dot w-2.5 h-2.5 rounded-full bg-amber-800 transition-all duration-300 transform scale-125 shadow-md";
+                } else {
+                    dot.className = "slide-dot w-2.5 h-2.5 rounded-full bg-gray-300 hover:bg-gray-400 transition-all";
+                }
+            });
+        }
+
+        // Soporte nativo para navegación con teclado
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "ArrowLeft") {
+                changeSlide(-1);
+            } else if (event.key === "ArrowRight") {
+                changeSlide(1);
+            }
+        });
+
+        // Reinicia a los valores originales de la faena
+        function resetData() {
+            currentDataset = JSON.parse(JSON.stringify(initialDataset));
+            renderTables();
+            calculateDashboardMetrics();
+        }
+
+        // Exportación de la tabla a formato CSV compatible con Microsoft Excel
+        function exportarCSV() {
+            let csvContent = "ID,Empresa,Dotacion,Curso,Realizados,Pendientes,Porcentaje\n";
+            
+            currentDataset.forEach(c => {
+                const addRow = (courseName, real) => {
+                    const pend = c.dot - real;
+                    const pct = Math.round((real / c.dot) * 100) || 0;
+                    csvContent += `${c.id},"${c.name}",${c.dot},"${courseName}",${real},${pend},${pct}%\n`;
+                };
+
+                addRow("Primeros Auxilios", c.c1);
+                addRow("Uso Extintores", c.c2);
+                addRow("Manejo Trauma", c.c3);
+                addRow("Sustancias Peligrosas", c.c4);
+            });
+
+            // Creación y descarga del archivo de forma limpia en el navegador
+            const blob = new Blob([new Uint8Array([0xEF, 0xBB, 0xBF]), csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", "Capacitacion_Contratistas_Las_Cenizas_2026.csv");
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        // Inicialización de la aplicación al cargar
+        window.onload = function() {
+            renderTables();
+            calculateDashboardMetrics();
         }
     </script>
 </body>

@@ -545,7 +545,7 @@
                     <span id="slide-indicator" class="text-xs font-black text-gray-700">1 / 8</span>
                 </div>
                 <button onclick="changeSlide(1)" class="w-9 h-9 rounded-full bg-[#8C4F1A] hover:bg-[#A65E2E] text-white flex items-center justify-center shadow transition">
-                    <i class="fa-solid fa-arrow-right"></i>
+                    <i class="fa-solid fa-arrow-right"></i> 
                 </button>
             </div>
 
@@ -591,10 +591,7 @@
             { id: 23, name: "Sta. Elvira", dot: 7, c1: 5, c2: 2, c3: 0, c4: 0 },
             { id: 24, name: "Franke",  dot: 129,c1: 0,  c2: 0, c3: 0,  c4: 16 }
         ];
-// ═══════════════════════════════════════════════════════════════
-//  FOTOS SEMANALES — Edita aquí cada semana (6 fotos por slide)
-//  Coloca tus archivos en la carpeta "fotos/" junto al index.html
-// ═══════════════════════════════════════════════════════════════
+
 // ==========================================================================
 // FOTOS SEMANALES – Edita aquí cada semana (6 fotos por slide)
 // Coloca tus archivos en la carpeta "fotos/" junto al index.html
@@ -977,31 +974,8 @@ function resetGalleryPhotos() {
                 document.body.removeChild(link);
             }
         }
-// ── Sistema de diseño PowerPoint — alineado con :root del proyecto ──
-const PPT_FONT = 'Calibri';
-const PPT_TOTAL_SLIDES = 8;
-
-const PPT_COLORS = {
-    copperDark:    '8C4F1A',  // --copper-dark
-    copperPrimary: 'A65E2E',  // --copper-primary
-    copperLight:   'D98A29',  // --copper-light
-    teal:          '3B7A80',  // --copper-oxidized
-    dark:          '2D2D2D',
-    gray:          '6B7280',
-    grayLight:     '9CA3AF',
-    white:         'FFFFFF',
-    bg:            'FAFAFA',  // --bg-slide
-    bgWarm:        'F7F6F5',  // body background
-    border:        'E5E7EB',
-    amberBg:       'FFFBEB',
-    green:         '16A34A',
-    red:           'DC2626',
-    course1:       '8C4F1A',  // Primeros Auxilios
-    course2:       '3B7A80',  // Extintores
-    course3:       'D98A29',  // Trauma
-    course4:       '4B5563'   // Sustancias
-};
-
+    }   
+}
 // ── Helpers visuales corporativos ──
 
 function pptxDoubleCopperLine(slide, y) {

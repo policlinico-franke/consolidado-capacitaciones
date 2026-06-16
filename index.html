@@ -10,7 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome para iconos de soporte -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- PptxGenJS para exportar a PowerPoint -->
+<script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -121,6 +122,54 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             background-color: rgba(253, 252, 251, 0.9);
         }
+/* Galería fotográfica con carga semanal */
+.photo-gallery .photo-card {
+    min-height: 0;
+}
+.photo-card .photo-frame {
+    position: relative;
+}
+.photo-card .photo-upload-btn {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    background: rgba(140, 79, 26, 0.92);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+.photo-card .photo-frame:hover .photo-upload-btn {
+    opacity: 1;
+}
+.photo-card .photo-title-input,
+.photo-card .photo-desc-input {
+    width: 100%;
+    border: 1px solid transparent;
+    background: transparent;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+.photo-card .photo-title-input {
+    font-size: 12px;
+    font-weight: 700;
+    color: #374151;
+}
+.photo-card .photo-desc-input {
+    font-size: 10px;
+    color: #6B7280;
+}
+.photo-card .photo-title-input:focus,
+.photo-card .photo-desc-input:focus {
+    outline: none;
+    border-color: #A65E2E;
+    background: #FFFBEB;
+}
     </style>
 </head>
 <body class="watermark-bg min-h-screen flex flex-col justify-between">
@@ -394,40 +443,7 @@
             </div>
 
             <!-- Galería de fotos con estructura premium de portafotos de cobre -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=Teoria+Extintores+Las+Cenizas" alt="Módulo Teórico" class="object-cover w-full h-full" onerror="this.src='https://placehold.co/600x400/8C4F1A/FFF?text=Imagen+Cargando...'">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Módulo Teórico Grupal</p>
-                    <p class="text-[10px] text-gray-500">Charla técnica de seguridad de extintores en domo móvil de capacitación.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Practica+Fuego+Real+Las+Cenizas" alt="Práctica Fuego Real" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Práctica Extinción Fuego Directo</p>
-                    <p class="text-[10px] text-gray-500">Operadores de Tecnisec aplicando técnicas de barrido con extintor PQS de 10kg.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/D98A29/FFF?text=Certificacion+Cenizas" alt="Evaluación Final" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Evaluación en Terreno</p>
-                    <p class="text-[10px] text-gray-500">Instructores acreditados evaluando la efectividad de descarga y postura segura.</p>
-                </div>
-            </div>
+            <div id="gallery-5" class="photo-gallery grid grid-cols-1 md:grid-cols-3 gap-3"></div>
         </section>
 
         <!-- ================= DIAPOSITIVA 6: REGISTRO FOTOGRÁFICO - PRIMEROS AUXILIOS ================= -->
@@ -437,40 +453,7 @@
                 <p class="text-xs text-gray-500">Sesiones: RCP, Soporte Vital Básico y Protocolo de Emergencia - 06 y 07 de Junio de 2026</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=RCP+Entrenamiento" alt="RCP Maniquí" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Maniobras de RCP con Maniquí</p>
-                    <p class="text-[10px] text-gray-500">Prácticas de reanimación cardiopulmonar con control de ritmo asistido por instructor.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Uso+De+DEA+Cenizas" alt="Uso DEA" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Instrucción de Desfibrilador (DEA)</p>
-                    <p class="text-[10px] text-gray-500">Capacitación sobre el uso del desfibrilador automático externo ante sospecha de paro cardíaco.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/D98A29/FFF?text=Evaluacion+Teorica" alt="Evaluaciones" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Evaluación de Competencia Final</p>
-                    <p class="text-[10px] text-gray-500">Acreditación teórica e individual del módulo de emergencias de ACHS y SASER.</p>
-                </div>
-            </div>
+            <div id="gallery-6" class="photo-gallery grid grid-cols-1 md:grid-cols-3 gap-3"></div>
         </section>
 
         <!-- ================= DIAPOSITIVA 7: REGISTRO FOTOGRÁFICO - TRAUMA / SUSTANCIAS ================= -->
@@ -480,40 +463,7 @@
                 <p class="text-xs text-gray-500">Módulos avanzados de inmovilización espinal y control de vertidos industriales.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/8C4F1A/FFF?text=Inmovilizacion+Trauma" alt="Manejo Trauma" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Uso de Tabla Espinal Espoleta</p>
-                    <p class="text-[10px] text-gray-500">Simulación práctica de empaquetado e inmovilización rápida ante sospecha de fractura.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/3B7A80/FFF?text=Kit+Spill+Quimicos" alt="Spill Kit" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">Uso de Kits de Contención de Derrames</p>
-                    <p class="text-[10px] text-gray-500">Técnicas de absorción rápida y cordones para delimitación de sustancias corrosivas en taller.</p>
-                </div>
-
-                <div class="bg-white p-3 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-2">
-                    <div class="aspect-video bg-gray-100 rounded-lg overflow-hidden relative group">
-                        <img src="https://placehold.co/600x400/D98A29/FFF?text=EPP+Quimicos" alt="EPP Sustancias" class="object-cover w-full h-full">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center">
-                            <span class="text-white text-xs font-bold uppercase"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Ampliar</span>
-                        </div>
-                    </div>
-                    <p class="text-xs font-bold text-gray-700">EPP Químico Nivel B</p>
-                    <p class="text-[10px] text-gray-500">Revisión de trajes Tychem, máscaras full-face y guantes de nitrilo específicos para faena.</p>
-                </div>
-            </div>
+            <div id="gallery-7" class="photo-gallery grid grid-cols-1 md:grid-cols-3 gap-3"></div>
         </section>
 
         <!-- ================= DIAPOSITIVA 8: PLAN DE ACCIÓN Y CONCLUSIONES ================= -->
@@ -559,13 +509,15 @@
                             <i class="fa-solid fa-file-excel"></i>
                             <span>Descargar Reporte en CSV</span>
                         </button>
-                        <button onclick="resetData()" class="flex items-center justify-center space-x-2 bg-gray-100 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-lg text-xs font-semibold transition">
-                            <i class="fa-solid fa-rotate-left"></i>
-                            <span>Reiniciar</span>
+                        <button onclick="exportarPowerPoint()" class="flex-grow flex items-center justify-center space-x-2 bg-[#3B7A80] text-white hover:bg-[#2d5f64] py-2 px-4 rounded-lg text-xs font-bold shadow-sm transition">
+                            <i class="fa-solid fa-file-powerpoint"></i>
+                            <span>Exportar a PowerPoint</span>
+                        </button>
+                        <button onclick="resetGalleryPhotos()" class="flex items-center justify-center space-x-2 bg-gray-100 text-gray-600 hover:bg-gray-200 py-2 px-3 rounded-lg text-xs font-semibold transition">
+                            <i class="fa-solid fa-images"></i>
+                            <span>Restaurar Fotos</span>
                         </button>
                     </div>
-                </div>
-            </div>
         </section>
 
     </main>
@@ -637,12 +589,132 @@
             { id: 23, name: "Sta. Elvira", dot: 7, c1: 5, c2: 2, c3: 0, c4: 0 },
             { id: 24, name: "Franke",  dot: 129,c1: 0,  c2: 0, c3: 0,  c4: 16 }
         ];
+// ═══════════════════════════════════════════════════════════════
+//  FOTOS SEMANALES — Edita aquí cada semana (6 fotos por slide)
+//  Coloca tus archivos en la carpeta "fotos/" junto al index.html
+// ═══════════════════════════════════════════════════════════════
+// ==========================================================================
+// FOTOS SEMANALES – Edita aquí cada semana (6 fotos por slide)
+// Coloca tus archivos en la carpeta "fotos/" junto al index.html
+// ==========================================================================
+const GALLERY_PHOTOS = {
+    5: [ // Extintores
+        { src: 'fotos/extintores-01.jpeg', title: 'Módulo Teórico Grupal', desc: 'Charla técnica de seguridad.' },
+        { src: 'fotos/extintores-02.jpeg', title: 'Práctica Extinción Fuego Directo', desc: 'Técnicas de barrido.' },
+        { src: 'fotos/extintores-03.jpeg', title: 'Evaluación en Terreno', desc: 'Evaluación de descarga y posición.' },
+        { src: 'fotos/extintores-04.jpeg', title: 'Foto 4', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/extintores-05.jpeg', title: 'Foto 5', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/extintores-06.jpeg', title: 'Foto 6', desc: 'Descripción de la actividad.' }
+    ],
+    6: [ // Primeros Auxilios
+        { src: 'fotos/auxilios-01.jpeg', title: 'Maniobras de RCP con Maniquí', desc: 'Reanimación cardiopulmonar.' },
+        { src: 'fotos/auxilios-02.jpeg', title: 'Instrucción Desfibrilador (DEA)', desc: 'Uso del DEA ante emergencias.' },
+        { src: 'fotos/auxilios-03.jpeg', title: 'Evaluación de Competencia Final', desc: 'Acreditación teórica y práctica.' },
+        { src: 'fotos/auxilios-04.jpeg', title: 'Foto 4', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/auxilios-05.jpeg', title: 'Foto 5', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/auxilios-06.jpeg', title: 'Foto 6', desc: 'Descripción de la actividad.' }
+    ],
+    7: [ // Trauma / Sustancias
+        { src: 'fotos/trauma-01.jpeg', title: 'Uso de Tabla Espinal Espoleta', desc: 'Inmovilización ante sospecha de trauma.' },
+        { src: 'fotos/trauma-02.jpeg', title: 'Kits de Contención de Derrames', desc: 'Absorción y delimitación.' },
+        { src: 'fotos/trauma-03.jpeg', title: 'EPP Químico Nivel B', desc: 'Trajes Tychem, máquinas y guantes.' },
+        { src: 'fotos/trauma-04.jpeg', title: 'Foto 4', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/trauma-05.jpeg', title: 'Foto 5', desc: 'Descripción de la actividad.' },
+        { src: 'fotos/trauma-06.jpeg', title: 'Foto 6', desc: 'Descripción de la actividad.' }
+    ]
+};
+
+const PLACEHOLDER_IMG = 'https://placehold.co/600x400/E5E7EB/9CA3AF?text=Sin+foto';
+const GALLERY_STORAGE_KEY = 'cenizas_galeria_fotos';
 
         // Copia de trabajo para cambios reactivos en la presentación
         let currentDataset = JSON.parse(JSON.stringify(initialDataset));
         let activeSlideIndex = 1;
         const totalSlides = 8;
+// ── Persistencia y render de galerías ──
+function loadGalleryOverrides() {
+    try {
+        return JSON.parse(localStorage.getItem(GALLERY_STORAGE_KEY)) || {};
+    } catch {
+        return {};
+    }
+}
 
+function saveGalleryOverrides(data) {
+    localStorage.setItem(GALLERY_STORAGE_KEY, JSON.stringify(data));
+}
+
+function getPhotoData(slideId, index) {
+    const defaults = GALLERY_PHOTOS[slideId][index];
+    const saved = loadGalleryOverrides()[`${slideId}-${index}`] || {};
+    return {
+        src: saved.src || defaults.src,
+        title: saved.title ?? defaults.title,
+        desc: saved.desc ?? defaults.desc
+    };
+}
+
+function renderPhotoGalleries() {
+    [5, 6, 7].forEach(slideId => {
+        const container = document.getElementById(`gallery-${slideId}`);
+        if (!container) return;
+        container.innerHTML = '';
+
+        GALLERY_PHOTOS[slideId].forEach((_, index) => {
+            const photo = getPhotoData(slideId, index);
+            const card = document.createElement('div');
+            card.className = 'photo-card bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm flex flex-col space-y-1.5';
+            card.innerHTML = `
+                <div class="photo-frame aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <img src="${photo.src}" alt="${photo.title}"
+                         class="object-cover w-full h-full"
+                         onerror="this.src='${PLACEHOLDER_IMG}'">
+                    <label class="photo-upload-btn">
+                        <i class="fa-solid fa-camera mr-1"></i> Cambiar foto
+                        <input type="file" accept="image/*" class="hidden"
+                               onchange="cargarFoto(event, ${slideId}, ${index})">
+                    </label>
+                </div>
+                <input type="text" class="photo-title-input" value="${photo.title}"
+                       onchange="guardarTextoFoto(${slideId}, ${index}, 'title', this.value)"
+                       placeholder="Título de la foto">
+                <input type="text" class="photo-desc-input" value="${photo.desc}"
+                       onchange="guardarTextoFoto(${slideId}, ${index}, 'desc', this.value)"
+                       placeholder="Descripción breve">
+            `;
+            container.appendChild(card);
+        });
+    });
+}
+
+function cargarFoto(event, slideId, index) {
+    const file = event.target.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const overrides = loadGalleryOverrides();
+        const key = `${slideId}-${index}`;
+        overrides[key] = overrides[key] || {};
+        overrides[key].src = e.target.result; // base64, persiste en el navegador
+        saveGalleryOverrides(overrides);
+        renderPhotoGalleries();
+    };
+    reader.readAsDataURL(file);
+}
+
+function guardarTextoFoto(slideId, index, field, value) {
+    const overrides = loadGalleryOverrides();
+    const key = `${slideId}-${index}`;
+    overrides[key] = overrides[key] || {};
+    overrides[key][field] = value;
+    saveGalleryOverrides(overrides);
+}
+
+function resetGalleryPhotos() {
+    localStorage.removeItem(GALLERY_STORAGE_KEY);
+    renderPhotoGalleries();
+}
         // Renderiza el HTML de las tablas con inputs dinámicos en base a los datos
         function renderTables() {
             const container1 = document.getElementById('table-body-group-1');
@@ -903,11 +975,292 @@
                 document.body.removeChild(link);
             }
         }
+// Colores corporativos para PowerPoint (sin #)
+const PPT_COLORS = {
+    copper: '8C4F1A',
+    copperLight: 'D98A29',
+    teal: '3B7A80',
+    dark: '2D2D2D',
+    gray: '6B7280',
+    white: 'FFFFFF',
+    bg: 'FAFAFA'
+};
 
+function pptxHeader(slide, title, subtitle) {
+    slide.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.15, fill: { color: PPT_COLORS.copper } });
+    slide.addText(title, {
+        x: 0.5, y: 0.35, w: 9, h: 0.6,
+        fontSize: 22, bold: true, color: PPT_COLORS.dark, fontFace: 'Arial'
+    });
+    if (subtitle) {
+        slide.addText(subtitle, {
+            x: 0.5, y: 0.95, w: 9, h: 0.35,
+            fontSize: 11, color: PPT_COLORS.gray, fontFace: 'Arial'
+        });
+    }
+}
+
+function getDashboardStats() {
+    let totalDot = 0, totalReal = 0;
+    let c1 = 0, c2 = 0, c3 = 0, c4 = 0;
+    currentDataset.forEach(c => {
+        totalDot += c.dot;
+        totalReal += c.c1 + c.c2 + c.c3 + c.c4;
+        c1 += c.c1; c2 += c.c2; c3 += c.c3; c4 += c.c4;
+    });
+    const globalCap = totalDot * 4;
+    return {
+        totalDot, totalReal,
+        totalPend: globalCap - totalReal,
+        globalPct: Math.round((totalReal / globalCap) * 100) || 0,
+        c1Pct: Math.round((c1 / totalDot) * 100) || 0,
+        c2Pct: Math.round((c2 / totalDot) * 100) || 0,
+        c3Pct: Math.round((c3 / totalDot) * 100) || 0,
+        c4Pct: Math.round((c4 / totalDot) * 100) || 0
+    };
+}
+
+function buildTableRows(fromId, toId) {
+    const header = [
+        { text: 'Empresa', options: { bold: true, fill: { color: 'F3F4F6' }, fontSize: 8 } },
+        { text: 'Dot.', options: { bold: true, fill: { color: 'F3F4F6' }, fontSize: 8, align: 'center' } },
+        { text: 'P. Auxilios', options: { bold: true, fill: { color: 'FEF2F2' }, fontSize: 8, align: 'center' } },
+        { text: 'Extintores', options: { bold: true, fill: { color: 'EFF6FF' }, fontSize: 8, align: 'center' } },
+        { text: 'Trauma', options: { bold: true, fill: { color: 'FFF7ED' }, fontSize: 8, align: 'center' } },
+        { text: 'Sust. Pelig.', options: { bold: true, fill: { color: 'F0FDFA' }, fontSize: 8, align: 'center' } }
+    ];
+    const rows = [header];
+    currentDataset
+        .filter(c => c.id >= fromId && c.id <= toId)
+        .forEach(c => {
+            const cell = (val) => ({
+                text: `${val}/${c.dot}\n(${Math.round((val / c.dot) * 100) || 0}%)`,
+                options: { fontSize: 7, align: 'center' }
+            });
+            rows.push([
+                { text: c.name, options: { fontSize: 8, bold: true } },
+                { text: String(c.dot), options: { fontSize: 8, align: 'center' } },
+                cell(c.c1), cell(c.c2), cell(c.c3), cell(c.c4)
+            ]);
+        });
+    return rows;
+}
+
+function addProgressBar(slide, label, pct, color, y) {
+    slide.addText(`${label}: ${pct}%`, { x: 0.5, y, w: 4, h: 0.25, fontSize: 10, color: PPT_COLORS.dark });
+    slide.addShape('rect', { x: 0.5, y: y + 0.28, w: 4, h: 0.15, fill: { color: 'E5E7EB' } });
+    slide.addShape('rect', { x: 0.5, y: y + 0.28, w: Math.max(0.05, 4 * (pct / 100)), h: 0.15, fill: { color } });
+}
+
+const GALLERY_SLIDE_META = {
+    5: { title: 'Registro Fotográfico - Combate contra Incendios', subtitle: 'Curso: Uso y Manejo Práctico de Extintores Portátiles en Terreno - Faena Franke' },
+    6: { title: 'Registro Fotográfico - Primeros Auxilios', subtitle: 'RCP, Soporte Vital Básico y Protocolo de Emergencia - Jun 2026' },
+    7: { title: 'Registro Fotográfico - Trauma y Sustancias Peligrosas', subtitle: 'Inmovilización espinal y control de vertidos industriales' }
+};
+
+function blobToDataURL(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+
+async function resolveImageForPptx(slideId, index) {
+    const photo = getPhotoData(slideId, index);
+    const src = photo.src;
+    if (!src || src.includes('placehold.co')) return null;
+    if (src.startsWith('data:')) return src;
+
+    const container = document.getElementById(`gallery-${slideId}`);
+    const imgEl = container?.querySelectorAll('img')[index];
+    if (imgEl?.complete && imgEl.naturalWidth > 0 && !imgEl.src.includes('placehold.co')) {
+        if (imgEl.src.startsWith('data:')) return imgEl.src;
+        if (imgEl.src.startsWith('blob:')) {
+            try {
+                const blob = await (await fetch(imgEl.src)).blob();
+                return await blobToDataURL(blob);
+            } catch { /* continuar con fetch de src */ }
+        }
+        try {
+            const canvas = document.createElement('canvas');
+            canvas.width = imgEl.naturalWidth;
+            canvas.height = imgEl.naturalHeight;
+            canvas.getContext('2d').drawImage(imgEl, 0, 0);
+            return canvas.toDataURL('image/jpeg', 0.85);
+        } catch { /* CORS: intentar fetch */ }
+    }
+
+    try {
+        const response = await fetch(src);
+        if (!response.ok) return null;
+        return await blobToDataURL(await response.blob());
+    } catch {
+        return null;
+    }
+}
+
+function addPptxImage(slide, imgData, x, y, w, h) {
+    const opts = { x, y, w, h, sizing: { type: 'cover', w, h } };
+    if (imgData.startsWith('data:')) {
+        slide.addImage({ ...opts, data: imgData.replace(/^data:image\/\w+;base64,/, '') });
+    } else {
+        slide.addImage({ ...opts, path: imgData });
+    }
+}
+
+async function addGallerySlideToPptx(pptx, slideId) {
+    const meta = GALLERY_SLIDE_META[slideId];
+    const slide = pptx.addSlide();
+    slide.background = { color: PPT_COLORS.white };
+    pptxHeader(slide, meta.title, meta.subtitle);
+
+    const COLS = 3;
+    const CARD_W = 2.95;
+    const CARD_H = 1.95;
+    const IMG_H = 1.15;
+    const START_X = 0.4;
+    const START_Y = 1.32;
+    const GAP_X = 0.2;
+    const GAP_Y = 0.15;
+
+    for (let i = 0; i < GALLERY_PHOTOS[slideId].length; i++) {
+        const col = i % COLS;
+        const row = Math.floor(i / COLS);
+        const x = START_X + col * (CARD_W + GAP_X);
+        const y = START_Y + row * (CARD_H + GAP_Y);
+        const photo = getPhotoData(slideId, i);
+
+        slide.addShape('roundRect', { x, y, w: CARD_W, h: CARD_H, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB', pt: 0.5 } });
+
+        const imgData = await resolveImageForPptx(slideId, i);
+        if (imgData) {
+            addPptxImage(slide, imgData, x + 0.05, y + 0.05, CARD_W - 0.1, IMG_H);
+        } else {
+            slide.addText('[Sin foto]', { x, y: y + 0.05, w: CARD_W, h: IMG_H, fontSize: 10, color: PPT_COLORS.gray, align: 'center', valign: 'middle' });
+        }
+
+        slide.addText(photo.title, { x: x + 0.05, y: y + IMG_H + 0.08, w: CARD_W - 0.1, h: 0.28, fontSize: 8, bold: true, color: PPT_COLORS.dark });
+        slide.addText(photo.desc, { x: x + 0.05, y: y + IMG_H + 0.36, w: CARD_W - 0.1, h: 0.45, fontSize: 7, color: PPT_COLORS.gray });
+    }
+}
+
+async function exportarPowerPoint() {
+    const pptx = new PptxGenJS();
+    pptx.layout = 'LAYOUT_WIDE'; // 16:9
+    pptx.author = 'Depto. Prevención de Riesgos - Las Cenizas';
+    pptx.title = 'Cumplimiento Cursos Obligatorios 2026';
+
+    const stats = getDashboardStats();
+    const fecha = new Date().toLocaleDateString('es-CL');
+
+    // ── DIAPOSITIVA 1: Portada ──
+    let s1 = pptx.addSlide();
+    s1.background = { color: PPT_COLORS.bg };
+    s1.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.2, fill: { color: PPT_COLORS.copper } });
+    s1.addText('GRUPO MINERO LAS CENIZAS', {
+        x: 0.5, y: 0.5, w: 9, h: 0.4, fontSize: 14, bold: true, color: PPT_COLORS.copper, align: 'center'
+    });
+    s1.addText('Cumplimiento de Cursos Obligatorios', {
+        x: 0.5, y: 1.2, w: 9, h: 0.8, fontSize: 32, bold: true, color: PPT_COLORS.dark, align: 'center'
+    });
+    s1.addText('Reporte de Capacitación 2026', {
+        x: 0.5, y: 2.0, w: 9, h: 0.4, fontSize: 16, color: PPT_COLORS.gray, align: 'center'
+    });
+    s1.addText(
+        'Seguimiento y avance de dotación entrenada en Seguridad, Salud Ocupacional y Manejo de Emergencias para Empresas Colaboradoras.',
+        { x: 1, y: 2.6, w: 8, h: 0.8, fontSize: 12, color: PPT_COLORS.gray, align: 'center' }
+    );
+    s1.addText('Principales colaboradores: Sotramin · Rentamaq · Newrest · Warner SpA · Hefaistos', {
+        x: 0.5, y: 4.5, w: 9, h: 0.4, fontSize: 10, color: PPT_COLORS.copper, align: 'center'
+    });
+    s1.addText(`Generado: ${fecha}`, {
+        x: 0.5, y: 5.0, w: 9, h: 0.3, fontSize: 9, color: PPT_COLORS.gray, align: 'center', italic: true
+    });
+
+    // ── DIAPOSITIVA 2: Dashboard ──
+    let s2 = pptx.addSlide();
+    s2.background = { color: PPT_COLORS.white };
+    pptxHeader(s2, 'Cuadro de Mando Ejecutivo', 'Métricas consolidadas de las 24 empresas colaboradoras');
+
+    const metrics = [
+        ['Dotación Total', String(stats.totalDot)],
+        ['Total Realizados', String(stats.totalReal)],
+        ['Total Pendientes', String(stats.totalPend)],
+        ['Avance Promedio', `${stats.globalPct}%`]
+    ];
+    metrics.forEach((m, i) => {
+        const x = 0.5 + (i % 2) * 4.8;
+        const y = 1.5 + Math.floor(i / 2) * 1.1;
+        s2.addShape('roundRect', { x, y, w: 4.2, h: 0.9, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB', pt: 1 } });
+        s2.addText(m[0], { x: x + 0.2, y: y + 0.1, w: 3.8, h: 0.3, fontSize: 9, color: PPT_COLORS.gray });
+        s2.addText(m[1], { x: x + 0.2, y: y + 0.4, w: 3.8, h: 0.4, fontSize: 20, bold: true, color: PPT_COLORS.dark });
+    });
+
+    addProgressBar(s2, 'Primeros Auxilios', stats.c1Pct, PPT_COLORS.copper, 3.8);
+    addProgressBar(s2, 'Uso de Extintores', stats.c2Pct, PPT_COLORS.teal, 4.3);
+    addProgressBar(s2, 'Manejo de Trauma', stats.c3Pct, PPT_COLORS.copperLight, 4.8);
+    addProgressBar(s2, 'Sustancias Peligrosas', stats.c4Pct, PPT_COLORS.gray, 5.3);
+
+    // ── DIAPOSITIVA 3: Tabla empresas 1-12 ──
+    let s3 = pptx.addSlide();
+    s3.background = { color: PPT_COLORS.white };
+    pptxHeader(s3, 'Control de Cumplimiento (1 - 12)', 'Sotramin a Amffal — Realizados / Dotación (%)');
+    s3.addTable(buildTableRows(1, 12), {
+        x: 0.3, y: 1.4, w: 9.4,
+        colW: [1.8, 0.6, 1.5, 1.5, 1.5, 1.5],
+        fontSize: 7, border: { pt: 0.5, color: 'E5E7EB' }, autoPage: false
+    });
+
+    // ── DIAPOSITIVA 4: Tabla empresas 13-24 ──
+    let s4 = pptx.addSlide();
+    s4.background = { color: PPT_COLORS.white };
+    pptxHeader(s4, 'Control de Cumplimiento (13 - 24)', 'Pillado a Franke — Realizados / Dotación (%)');
+    s4.addTable(buildTableRows(13, 24), {
+        x: 0.3, y: 1.4, w: 9.4,
+        colW: [1.8, 0.6, 1.5, 1.5, 1.5, 1.5],
+        fontSize: 7, border: { pt: 0.5, color: 'E5E7EB' }
+    });
+
+    // ── DIAPOSITIVAS 5, 6, 7: Registro fotográfico (6 fotos reales por slide) ──
+    await addGallerySlideToPptx(pptx, 5);
+    await addGallerySlideToPptx(pptx, 6);
+    await addGallerySlideToPptx(pptx, 7);
+
+    // ── DIAPOSITIVA 8: Plan de acción ──
+    let s8 = pptx.addSlide();
+    s8.background = { color: PPT_COLORS.white };
+    pptxHeader(s8, 'Plan de Acción y Conclusiones Generales', 'Próximos hitos del programa integrado de capacitación 2026');
+
+    s8.addText('Prioridades Inmediatas', {
+        x: 0.5, y: 1.4, w: 4.3, h: 0.35, fontSize: 12, bold: true, color: PPT_COLORS.copper
+    });
+    s8.addText([
+        { text: '• Empresas con avance cero: Verasay, Diexa y Transver — agendar cursos prácticos de inmediato.\n', options: { bullet: false, fontSize: 9 } },
+        { text: '• Programa Franke: mayor dotación (129 operarios) — priorizar Sustancias Peligrosas.\n', options: { bullet: false, fontSize: 9 } },
+        { text: '• Homologación interna: validar certificados ACHS, SASER y Adecco.', options: { bullet: false, fontSize: 9 } }
+    ], { x: 0.5, y: 1.8, w: 4.3, h: 2.5, color: PPT_COLORS.dark, valign: 'top' });
+
+    s8.addShape('roundRect', { x: 5.2, y: 1.4, w: 4.3, h: 2.8, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB' } });
+    s8.addText('Consolidado Final', { x: 5.4, y: 1.55, w: 4, h: 0.3, fontSize: 12, bold: true, color: PPT_COLORS.dark });
+    s8.addText(
+        `Avance global: ${stats.globalPct}%\nDotación: ${stats.totalDot} | Realizados: ${stats.totalReal} | Pendientes: ${stats.totalPend}\n\nInforme auditable ante Dirección del Trabajo y Sernageomin.`,
+        { x: 5.4, y: 2.0, w: 3.9, h: 2.0, fontSize: 10, color: PPT_COLORS.gray }
+    );
+
+    s8.addText('Mina Las Cenizas | Depto. de Prevención de Riesgos', {
+        x: 0.5, y: 5.0, w: 9, h: 0.3, fontSize: 9, color: PPT_COLORS.copper, align: 'center'
+    });
+
+    // Descargar archivo .pptx
+    await pptx.writeFile({ fileName: 'Capacitacion_Contratistas_Las_Cenizas_2026.pptx' });
+}
         // Inicialización de la aplicación al cargar
         window.onload = function() {
             renderTables();
             calculateDashboardMetrics();
+            renderPhotoGalleries();  //
         }
     </script>
 </body>

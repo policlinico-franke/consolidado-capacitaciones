@@ -630,6 +630,7 @@ const GALLERY_STORAGE_KEY = 'cenizas_galeria_fotos';
         let currentDataset = JSON.parse(JSON.stringify(initialDataset));
         let activeSlideIndex = 1;
         const totalSlides = 8;
+        let currentSlide = 1;
 // ── Persistencia y render de galerías ──
 function loadGalleryOverrides() {
     try {

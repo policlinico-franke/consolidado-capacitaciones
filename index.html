@@ -1877,19 +1877,18 @@ async function exportarPowerPoint() {
 // FUNCIÓN DE NAVEGACIÓN ENTRE SLIDES (CORREGIDA)
 // ═══════════════════════════════════════════════════════════════
 function changeSlide(direction) {
-    currentSlide += direction;
+    // Calcular el nuevo slide
+    let newSlide = currentSlide + direction;
     
-    if (currentSlide < 1) currentSlide = 1;
-    if (currentSlide > totalSlides) currentSlide = totalSlides;
+    // Limitar entre 1 y 8
+    if (newSlide < 1) newSlide = 1;
+    if (newSlide > totalSlides) newSlide = totalSlides;
     
-    // Actualizar el indicador de página (CORREGIDO: usar ID en lugar de clase)
-    const pageIndicator = document.getElementById('slide-indicator');
-    if (pageIndicator) {
-        pageIndicator.textContent = `${currentSlide} / ${totalSlides}`;
-    }
+    // Actualizar la variable global
+    currentSlide = newSlide;
     
-    // Scroll suave al inicio
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Llamar a la función goToSlide que ya existe en tu proyecto
+    goToSlide(currentSlide);
     
     console.log(`Navegando a slide ${currentSlide}`);
 }

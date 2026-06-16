@@ -1223,10 +1223,85 @@ async function exportarPowerPoint() {
         fontSize: 7, border: { pt: 0.5, color: 'E5E7EB' }
     });
 
-    // ── DIAPOSITIVAS 5, 6, 7: Registro fotográfico (6 fotos reales por slide) ──
-    await addGallerySlideToPptx(pptx, 5);
-    await addGallerySlideToPptx(pptx, 6);
-    await addGallerySlideToPptx(pptx, 7);
+// — DIAPOSITIVAS 5, 6, 7: Registros Fotográficos Premium —
+const slideTitles = {
+    5: { t: 'Registro Fotográfico - Combate contra Incendios', s: 'Curso: Uso y Manejo Práctico de Extintores Portátiles en Terreno - Faena Franke' },
+    6: { t: 'Registro Fotográfico - Primeros Auxilios', s: 'Curso: Técnicas de Reanimación y Soporte Vital Básico en Faena' },
+    7: { t: 'Registro Fotográfico - Trauma y Sustancias Peligrosas', s: 'Curso: Respuesta ante Emergencias Químicas y Manejo de Pacientes Politraumatizados' }
+};
+
+[5, 6, 7].forEach(slideId => {
+    let s = pptx.addSlide();
+    s.background = { color: PPT_COLORS.white }; // Fondo limpio de diapositiva
+    
+    // 1. Encabezado institucional estilizado
+    pptxHeader(s, slideTitles[slideId].t, slideTitles[slideId].s);
+
+    // 2. Configuración de la grilla 3x2 (Ajustada milimétricamente)
+    const startX = 0.5;
+    const startY = 1.4;
+    const cardW = 2.9;
+    const cardH = 2.4;
+    const gapX = 0.3;
+    const gapY = 0.3;
+
+    GALLERY_PHOTOS[slideId].forEach((_, index) => {
+        const row = Math.floor(index / 3);
+        const col = index % 3;
+        
+        const xPos = startX + col * (cardW + gapX);
+        const yPos = startY + row * (cardH + gapY);
+
+        const photoData = getPhotoData(slideId, index);
+
+        // A. Tarjeta contenedora con esquinas redondeadas y fondo suave
+        s.addShape('roundRect', { 
+            x: xPos, y: yPos, w: cardW, h: cardH, 
+            fill: { color: 'F8FAFC' }, 
+            line: { color: 'E2E8F0', width: 1 } 
+        });
+
+        // B. Contenedor interno para la imagen (Efecto marco)
+        const imgX = xPos + 0.15;
+        const imgY = yPos + 0.15;
+        const imgW = cardW - 0.3;
+        const imgH = cardH - 1.0;
+
+        if (photoData.src && !photoData.src.includes('placeholder.co')) {
+            // Si hay una foto real cargada
+            s.addImage({
+                path: photoData.src,
+                x: imgX, y: imgY, w: imgW, h: imgH,
+                sizing: { type: 'cover' }
+            });
+        } else {
+            // Marcador de posición elegante (Adiós al "[Sin foto]" horrible)
+            s.addShape('rect', { 
+                x: imgX, y: imgY, w: imgW, h: imgH, 
+                fill: { color: 'E2E8F0' } 
+            });
+            s.addText('📷 Foto Pendiente', {
+                x: imgX, y: imgY, w: imgW, h: imgH,
+                fontSize: 10, bold: true, color: '94A3B8',
+                align: 'center', valign: 'middle'
+            });
+        }
+
+        // C. Título de la actividad (Texto destacado)
+        s.addText(photoData.title || `Foto ${index + 1}`, {
+            x: xPos + 0.15, y: yPos + cardH - 0.75, w: cardW - 0.3, h: 0.3,
+            fontSize: 10, bold: true, color: PPT_COLORS.dark,
+            valign: 'middle'
+        });
+
+        // D. Descripción corta de la actividad (Texto secundario)
+        s.addText(photoData.desc || 'Descripción de la actividad.', {
+            x: xPos + 0.15, y: yPos + cardH - 0.45, w: cardW - 0.3, h: 0.35,
+            fontSize: 8, color: PPT_COLORS.gray,
+            valign: 'top'
+        });
+    });
+});
 
     // ── DIAPOSITIVA 8: Plan de acción ──
     let s8 = pptx.addSlide();

@@ -1396,6 +1396,8 @@ async function exportarPowerPoint() {
         x: 7.6, y: 2.05, w: 1.6, h: 1.0,
         fontSize: 11, bold: true, color: PPT_COLORS.copperDark, align: 'center', fontFace: PPT_FONT
     });
+    // ── 🚀 ACCIÓN DE DESCARGA (Esto era lo que faltaba) ──
+    pptx.writeFile({ fileName: 'Informe_Capacitacion_2026.pptx' });
 }
 
         // Inicialización de la aplicación al cargar

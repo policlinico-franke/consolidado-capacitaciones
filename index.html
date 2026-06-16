@@ -974,8 +974,7 @@ function resetGalleryPhotos() {
                 document.body.removeChild(link);
             }
         }
-      
-}
+
 // ── Helpers visuales corporativos ──
 
 function pptxDoubleCopperLine(slide, y) {
@@ -1873,9 +1872,9 @@ async function exportarPowerPoint() {
             calculateDashboardMetrics();
             renderPhotoGalleries();  //
         }
-        // ═══════════════════════════════════════════════════
-// FUNCIÓN DE NAVEGACIÓN ENTRE SLIDES
-// ═══════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// FUNCIÓN DE NAVEGACIÓN ENTRE SLIDES (CORREGIDA)
+// ═══════════════════════════════════════════════════════════════
 let currentSlide = 1;
 const totalSlides = 8;
 
@@ -1885,13 +1884,15 @@ function changeSlide(direction) {
     if (currentSlide < 1) currentSlide = 1;
     if (currentSlide > totalSlides) currentSlide = totalSlides;
     
-    // Actualizar el indicador de página
-    const pageIndicator = document.querySelector('.page-indicator');
+    // Actualizar el indicador de página (CORREGIDO: usar ID en lugar de clase)
+    const pageIndicator = document.getElementById('slide-indicator');
     if (pageIndicator) {
         pageIndicator.textContent = `${currentSlide} / ${totalSlides}`;
     }
     
-    // Aquí puedes agregar lógica para mostrar/ocultar secciones
+    // Scroll suave al inicio
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
     console.log(`Navegando a slide ${currentSlide}`);
 }
     </script>

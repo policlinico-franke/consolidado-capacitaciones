@@ -975,31 +975,141 @@ function resetGalleryPhotos() {
                 document.body.removeChild(link);
             }
         }
-// Colores corporativos para PowerPoint (sin #)
+// ── Sistema de diseño PowerPoint — alineado con :root del proyecto ──
+const PPT_FONT = 'Calibri';
+const PPT_TOTAL_SLIDES = 8;
+
 const PPT_COLORS = {
-    copper: '8C4F1A',
-    copperLight: 'D98A29',
-    teal: '3B7A80',
-    dark: '2D2D2D',
-    gray: '6B7280',
-    white: 'FFFFFF',
-    bg: 'FAFAFA'
+    copperDark:    '8C4F1A',  // --copper-dark
+    copperPrimary: 'A65E2E',  // --copper-primary
+    copperLight:   'D98A29',  // --copper-light
+    teal:          '3B7A80',  // --copper-oxidized
+    dark:          '2D2D2D',
+    gray:          '6B7280',
+    grayLight:     '9CA3AF',
+    white:         'FFFFFF',
+    bg:            'FAFAFA',  // --bg-slide
+    bgWarm:        'F7F6F5',  // body background
+    border:        'E5E7EB',
+    amberBg:       'FFFBEB',
+    green:         '16A34A',
+    red:           'DC2626',
+    course1:       '8C4F1A',  // Primeros Auxilios
+    course2:       '3B7A80',  // Extintores
+    course3:       'D98A29',  // Trauma
+    course4:       '4B5563'   // Sustancias
 };
 
-function pptxHeader(slide, title, subtitle) {
-    slide.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.15, fill: { color: PPT_COLORS.copper } });
-    slide.addText(title, {
-        x: 0.5, y: 0.35, w: 9, h: 0.6,
-        fontSize: 22, bold: true, color: PPT_COLORS.dark, fontFace: 'Arial'
+// ── Helpers visuales corporativos ──
+
+function pptxDoubleCopperLine(slide, y) {
+    slide.addShape('rect', { x: 0, y, w: '100%', h: 0.025, fill: { color: PPT_COLORS.copperDark } });
+    slide.addShape('rect', { x: 0, y: y + 0.045, w: '100%', h: 0.025, fill: { color: PPT_COLORS.copperLight } });
+}
+
+function pptxBrandSquares(slide, x, y) {
+    const s = 0.17, g = 0.06;
+    slide.addShape('rect', { x, y, w: s, h: s, fill: { color: PPT_COLORS.teal } });
+    slide.addShape('rect', { x: x + s + g, y, w: s, h: s, fill: { color: PPT_COLORS.copperDark } });
+    slide.addShape('rect', { x: x + (s + g) * 2, y, w: s, h: s, fill: { color: PPT_COLORS.copperLight } });
+}
+
+function pptxFooter(slide, pageNum) {
+    pptxDoubleCopperLine(slide, 5.05);
+    slide.addText('GRUPO MINERO LAS CENIZAS', {
+        x: 0.5, y: 5.18, w: 4.5, h: 0.22, fontSize: 7, bold: true, color: PPT_COLORS.copperDark, fontFace: PPT_FONT
     });
-    if (subtitle) {
-        slide.addText(subtitle, {
-            x: 0.5, y: 0.95, w: 9, h: 0.35,
-            fontSize: 11, color: PPT_COLORS.gray, fontFace: 'Arial'
+    slide.addText('Depto. Prevención de Riesgos · Capacitación Obligatoria 2026', {
+        x: 0.5, y: 5.36, w: 6, h: 0.18, fontSize: 7, color: PPT_COLORS.gray, fontFace: PPT_FONT
+    });
+    pptxBrandSquares(slide, 9.05, 5.2);
+    if (pageNum) {
+        slide.addText(`${pageNum} / ${PPT_TOTAL_SLIDES}`, {
+            x: 8.3, y: 5.36, w: 1.4, h: 0.18, fontSize: 7, color: PPT_COLORS.grayLight, align: 'right', fontFace: PPT_FONT
         });
     }
 }
 
+function pptxHeader(slide, title, subtitle, pageNum) {
+    // Barra superior doble cobre
+    slide.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.1, fill: { color: PPT_COLORS.copperDark } });
+    slide.addShape('rect', { x: 0, y: 0.1, w: '100%', h: 0.035, fill: { color: PPT_COLORS.copperPrimary } });
+    // Acento lateral turquesa
+    slide.addShape('rect', { x: 0, y: 0, w: 0.07, h: 1.15, fill: { color: PPT_COLORS.teal } });
+    // Título y subtítulo
+    slide.addText(title, {
+        x: 0.55, y: 0.25, w: 8.7, h: 0.55,
+        fontSize: 20, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT
+    });
+    if (subtitle) {
+        slide.addText(subtitle, {
+            x: 0.55, y: 0.78, w: 8.7, h: 0.32,
+            fontSize: 10, color: PPT_COLORS.gray, fontFace: PPT_FONT
+        });
+    }
+    // Separador inferior del header
+    slide.addShape('line', {
+        x: 0.5, y: 1.15, w: 9, h: 0,
+        line: { color: PPT_COLORS.border, pt: 0.75 }
+    });
+    pptxFooter(slide, pageNum);
+}
+
+function pptxMetricCard(slide, x, y, label, value, accentColor) {
+    slide.addShape('roundRect', {
+        x, y, w: 4.35, h: 1.05,
+        fill: { color: PPT_COLORS.white },
+        line: { color: PPT_COLORS.border, pt: 0.75 },
+        rectRadius: 0.08
+    });
+    // Franja de acento izquierda (como tarjetas del dashboard web)
+    slide.addShape('rect', { x, y: y + 0.08, w: 0.07, h: 0.89, fill: { color: accentColor } });
+    slide.addShape('roundRect', {
+        x: x + 0.22, y: y + 0.18, w: 0.55, h: 0.55,
+        fill: { color: PPT_COLORS.amberBg }, line: { color: accentColor, pt: 0.5 }, rectRadius: 0.06
+    });
+    slide.addText(label.toUpperCase(), {
+        x: x + 0.9, y: y + 0.15, w: 3.2, h: 0.28,
+        fontSize: 8, bold: true, color: PPT_COLORS.grayLight, fontFace: PPT_FONT, charSpacing: 1
+    });
+    slide.addText(value, {
+        x: x + 0.9, y: y + 0.45, w: 3.2, h: 0.45,
+        fontSize: 22, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT
+    });
+}
+
+function pptxProgressBarPro(slide, label, pct, color, y, xStart = 0.5, width = 4.2) {
+    slide.addText(label, {
+        x: xStart, y, w: width * 0.65, h: 0.25,
+        fontSize: 9, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT
+    });
+    slide.addText(`${pct}%`, {
+        x: xStart + width * 0.65, y, w: width * 0.35, h: 0.25,
+        fontSize: 10, bold: true, color, align: 'right', fontFace: PPT_FONT
+    });
+    slide.addShape('roundRect', {
+        x: xStart, y: y + 0.28, w: width, h: 0.18,
+        fill: { color: 'F3F4F6' }, rectRadius: 0.09
+    });
+    slide.addShape('roundRect', {
+        x: xStart, y: y + 0.28, w: Math.max(0.08, width * (pct / 100)), h: 0.18,
+        fill: { color }, rectRadius: 0.09
+    });
+}
+
+function pptxSectionBox(slide, x, y, w, h, title, accentColor) {
+    slide.addShape('roundRect', {
+        x, y, w, h,
+        fill: { color: PPT_COLORS.white },
+        line: { color: PPT_COLORS.border, pt: 0.75 },
+        rectRadius: 0.1
+    });
+    slide.addShape('rect', { x, y, w, h: 0.06, fill: { color: accentColor } });
+    slide.addText(title, {
+        x: x + 0.2, y: y + 0.18, w: w - 0.4, h: 0.35,
+        fontSize: 11, bold: true, color: PPT_COLORS.copperDark, fontFace: PPT_FONT
+    });
+}
 function getDashboardStats() {
     let totalDot = 0, totalReal = 0;
     let c1 = 0, c2 = 0, c3 = 0, c4 = 0;
@@ -1021,35 +1131,37 @@ function getDashboardStats() {
 }
 
 function buildTableRows(fromId, toId) {
+    const headerStyle = (text, bg) => ({
+        text,
+        options: { bold: true, fill: { color: bg }, fontSize: 8, color: PPT_COLORS.white, align: 'center', fontFace: PPT_FONT }
+    });
     const header = [
-        { text: 'Empresa', options: { bold: true, fill: { color: 'F3F4F6' }, fontSize: 8 } },
-        { text: 'Dot.', options: { bold: true, fill: { color: 'F3F4F6' }, fontSize: 8, align: 'center' } },
-        { text: 'P. Auxilios', options: { bold: true, fill: { color: 'FEF2F2' }, fontSize: 8, align: 'center' } },
-        { text: 'Extintores', options: { bold: true, fill: { color: 'EFF6FF' }, fontSize: 8, align: 'center' } },
-        { text: 'Trauma', options: { bold: true, fill: { color: 'FFF7ED' }, fontSize: 8, align: 'center' } },
-        { text: 'Sust. Pelig.', options: { bold: true, fill: { color: 'F0FDFA' }, fontSize: 8, align: 'center' } }
+        { text: 'Empresa Colaboradora', options: { bold: true, fill: { color: PPT_COLORS.copperDark }, fontSize: 8, color: PPT_COLORS.white, fontFace: PPT_FONT } },
+        headerStyle('Dot.', PPT_COLORS.copperPrimary),
+        headerStyle('P. Auxilios', PPT_COLORS.course1),
+        headerStyle('Extintores', PPT_COLORS.course2),
+        headerStyle('Trauma', PPT_COLORS.course3),
+        headerStyle('Sust. Pelig.', PPT_COLORS.course4)
     ];
     const rows = [header];
     currentDataset
         .filter(c => c.id >= fromId && c.id <= toId)
-        .forEach(c => {
-            const cell = (val) => ({
-                text: `${val}/${c.dot}\n(${Math.round((val / c.dot) * 100) || 0}%)`,
-                options: { fontSize: 7, align: 'center' }
-            });
+        .forEach((c, idx) => {
+            const rowBg = idx % 2 === 0 ? PPT_COLORS.white : PPT_COLORS.bg;
+            const cell = (val, courseColor) => {
+                const pct = Math.round((val / c.dot) * 100) || 0;
+                return {
+                    text: `${val}/${c.dot}\n(${pct}%)`,
+                    options: { fontSize: 7, align: 'center', fill: { color: rowBg }, color: pct < 40 ? PPT_COLORS.red : PPT_COLORS.dark, fontFace: PPT_FONT }
+                };
+            };
             rows.push([
-                { text: c.name, options: { fontSize: 8, bold: true } },
-                { text: String(c.dot), options: { fontSize: 8, align: 'center' } },
+                { text: `${c.id}. ${c.name}`, options: { fontSize: 8, bold: true, fill: { color: rowBg }, fontFace: PPT_FONT } },
+                { text: String(c.dot), options: { fontSize: 8, bold: true, align: 'center', fill: { color: PPT_COLORS.amberBg }, fontFace: PPT_FONT } },
                 cell(c.c1), cell(c.c2), cell(c.c3), cell(c.c4)
             ]);
         });
     return rows;
-}
-
-function addProgressBar(slide, label, pct, color, y) {
-    slide.addText(`${label}: ${pct}%`, { x: 0.5, y, w: 4, h: 0.25, fontSize: 10, color: PPT_COLORS.dark });
-    slide.addShape('rect', { x: 0.5, y: y + 0.28, w: 4, h: 0.15, fill: { color: 'E5E7EB' } });
-    slide.addShape('rect', { x: 0.5, y: y + 0.28, w: Math.max(0.05, 4 * (pct / 100)), h: 0.15, fill: { color } });
 }
 
 const GALLERY_SLIDE_META = {
@@ -1110,39 +1222,53 @@ function addPptxImage(slide, imgData, x, y, w, h) {
     }
 }
 
-async function addGallerySlideToPptx(pptx, slideId) {
+async function addGallerySlideToPptx(pptx, slideId, pageNum) {
     const meta = GALLERY_SLIDE_META[slideId];
     const slide = pptx.addSlide();
-    slide.background = { color: PPT_COLORS.white };
-    pptxHeader(slide, meta.title, meta.subtitle);
+    slide.background = { color: PPT_COLORS.bgWarm };
+    pptxHeader(slide, meta.title, meta.subtitle, pageNum);
 
-    const COLS = 3;
-    const CARD_W = 2.95;
-    const CARD_H = 1.95;
-    const IMG_H = 1.15;
-    const START_X = 0.4;
-    const START_Y = 1.32;
-    const GAP_X = 0.2;
-    const GAP_Y = 0.15;
+    const COLS = 3, CARD_W = 2.95, CARD_H = 1.95, IMG_H = 1.12;
+    const START_X = 0.42, START_Y = 1.28, GAP_X = 0.18, GAP_Y = 0.12;
+    const accents = [PPT_COLORS.copperDark, PPT_COLORS.teal, PPT_COLORS.copperLight];
 
     for (let i = 0; i < GALLERY_PHOTOS[slideId].length; i++) {
-        const col = i % COLS;
-        const row = Math.floor(i / COLS);
+        const col = i % COLS, row = Math.floor(i / COLS);
         const x = START_X + col * (CARD_W + GAP_X);
         const y = START_Y + row * (CARD_H + GAP_Y);
         const photo = getPhotoData(slideId, i);
 
-        slide.addShape('roundRect', { x, y, w: CARD_W, h: CARD_H, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB', pt: 0.5 } });
+        slide.addShape('roundRect', {
+            x, y, w: CARD_W, h: CARD_H,
+            fill: { color: PPT_COLORS.white },
+            line: { color: PPT_COLORS.border, pt: 0.75 },
+            rectRadius: 0.08
+        });
+        // Acento superior por columna (como los 3 cuadrados del header web)
+        slide.addShape('rect', { x, y, w: CARD_W, h: 0.05, fill: { color: accents[col] } });
 
         const imgData = await resolveImageForPptx(slideId, i);
         if (imgData) {
-            addPptxImage(slide, imgData, x + 0.05, y + 0.05, CARD_W - 0.1, IMG_H);
+            addPptxImage(slide, imgData, x + 0.08, y + 0.12, CARD_W - 0.16, IMG_H);
         } else {
-            slide.addText('[Sin foto]', { x, y: y + 0.05, w: CARD_W, h: IMG_H, fontSize: 10, color: PPT_COLORS.gray, align: 'center', valign: 'middle' });
+            slide.addShape('roundRect', {
+                x: x + 0.08, y: y + 0.12, w: CARD_W - 0.16, h: IMG_H,
+                fill: { color: 'F3F4F6' }, rectRadius: 0.05
+            });
+            slide.addText('Foto pendiente', {
+                x: x + 0.08, y: y + 0.12, w: CARD_W - 0.16, h: IMG_H,
+                fontSize: 9, color: PPT_COLORS.grayLight, align: 'center', valign: 'middle', fontFace: PPT_FONT
+            });
         }
 
-        slide.addText(photo.title, { x: x + 0.05, y: y + IMG_H + 0.08, w: CARD_W - 0.1, h: 0.28, fontSize: 8, bold: true, color: PPT_COLORS.dark });
-        slide.addText(photo.desc, { x: x + 0.05, y: y + IMG_H + 0.36, w: CARD_W - 0.1, h: 0.45, fontSize: 7, color: PPT_COLORS.gray });
+        slide.addText(photo.title, {
+            x: x + 0.1, y: y + IMG_H + 0.18, w: CARD_W - 0.2, h: 0.28,
+            fontSize: 8, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT
+        });
+        slide.addText(photo.desc, {
+            x: x + 0.1, y: y + IMG_H + 0.44, w: CARD_W - 0.2, h: 0.4,
+            fontSize: 7, color: PPT_COLORS.gray, fontFace: PPT_FONT
+        });
     }
 }
 
@@ -1153,184 +1279,122 @@ async function exportarPowerPoint() {
     pptx.title = 'Cumplimiento Cursos Obligatorios 2026';
 
     const stats = getDashboardStats();
-    const fecha = new Date().toLocaleDateString('es-CL');
+    const fecha = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    // ── DIAPOSITIVA 1: Portada ──
+    // ── SLIDE 1: Portada premium ──
     let s1 = pptx.addSlide();
-    s1.background = { color: PPT_COLORS.bg };
-    s1.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.2, fill: { color: PPT_COLORS.copper } });
+    s1.background = { color: PPT_COLORS.bgWarm };
+    s1.addShape('rect', { x: 0, y: 0, w: '100%', h: 0.14, fill: { color: PPT_COLORS.copperDark } });
+    s1.addShape('rect', { x: 0, y: 0.14, w: '100%', h: 0.05, fill: { color: PPT_COLORS.copperPrimary } });
+    s1.addShape('rect', { x: 0, y: 0, w: 0.35, h: '100%', fill: { color: PPT_COLORS.teal } });
+    s1.addShape('roundRect', {
+        x: 1.2, y: 0.8, w: 8.3, h: 4.2,
+        fill: { color: PPT_COLORS.white, transparency: 5 },
+        line: { color: PPT_COLORS.border, pt: 1 }, rectRadius: 0.15
+    });
+    pptxBrandSquares(s1, 1.5, 1.1);
     s1.addText('GRUPO MINERO LAS CENIZAS', {
-        x: 0.5, y: 0.5, w: 9, h: 0.4, fontSize: 14, bold: true, color: PPT_COLORS.copper, align: 'center'
+        x: 2.1, y: 1.05, w: 7, h: 0.35, fontSize: 13, bold: true, color: PPT_COLORS.copperDark, fontFace: PPT_FONT
     });
     s1.addText('Cumplimiento de Cursos Obligatorios', {
-        x: 0.5, y: 1.2, w: 9, h: 0.8, fontSize: 32, bold: true, color: PPT_COLORS.dark, align: 'center'
+        x: 1.5, y: 1.7, w: 7.8, h: 0.9, fontSize: 30, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT
     });
-    s1.addText('Reporte de Capacitación 2026', {
-        x: 0.5, y: 2.0, w: 9, h: 0.4, fontSize: 16, color: PPT_COLORS.gray, align: 'center'
+    s1.addText('REPORTE DE CAPACITACIÓN 2026', {
+        x: 1.5, y: 2.55, w: 7.8, h: 0.4, fontSize: 14, color: PPT_COLORS.copperPrimary, fontFace: PPT_FONT, charSpacing: 2
     });
+    s1.addShape('line', { x: 1.5, y: 3.05, w: 7.5, h: 0, line: { color: PPT_COLORS.copperLight, pt: 1.5 } });
     s1.addText(
         'Seguimiento y avance de dotación entrenada en Seguridad, Salud Ocupacional y Manejo de Emergencias para Empresas Colaboradoras.',
-        { x: 1, y: 2.6, w: 8, h: 0.8, fontSize: 12, color: PPT_COLORS.gray, align: 'center' }
+        { x: 1.5, y: 3.2, w: 7.5, h: 0.7, fontSize: 11, color: PPT_COLORS.gray, fontFace: PPT_FONT }
     );
-    s1.addText('Principales colaboradores: Sotramin · Rentamaq · Newrest · Warner SpA · Hefaistos', {
-        x: 0.5, y: 4.5, w: 9, h: 0.4, fontSize: 10, color: PPT_COLORS.copper, align: 'center'
+    s1.addText('Sotramin · Rentamaq · Newrest · Warner SpA · Hefaistos · +19 colaboradores', {
+        x: 1.5, y: 4.1, w: 7.5, h: 0.35, fontSize: 9, bold: true, color: PPT_COLORS.teal, fontFace: PPT_FONT
     });
-    s1.addText(`Generado: ${fecha}`, {
-        x: 0.5, y: 5.0, w: 9, h: 0.3, fontSize: 9, color: PPT_COLORS.gray, align: 'center', italic: true
+    s1.addText(`Documento generado el ${fecha}`, {
+        x: 1.5, y: 4.55, w: 7.5, h: 0.25, fontSize: 8, italic: true, color: PPT_COLORS.grayLight, fontFace: PPT_FONT
     });
+    pptxDoubleCopperLine(s1, 5.05);
 
-    // ── DIAPOSITIVA 2: Dashboard ──
+    // ── SLIDE 2: Dashboard ──
     let s2 = pptx.addSlide();
-    s2.background = { color: PPT_COLORS.white };
-    pptxHeader(s2, 'Cuadro de Mando Ejecutivo', 'Métricas consolidadas de las 24 empresas colaboradoras');
+    s2.background = { color: PPT_COLORS.bgWarm };
+    pptxHeader(s2, 'Cuadro de Mando Ejecutivo', 'Métricas consolidadas de las 24 empresas colaboradoras — Actualización en tiempo real', 2);
 
-    const metrics = [
-        ['Dotación Total', String(stats.totalDot)],
-        ['Total Realizados', String(stats.totalReal)],
-        ['Total Pendientes', String(stats.totalPend)],
-        ['Avance Promedio', `${stats.globalPct}%`]
-    ];
-    metrics.forEach((m, i) => {
-        const x = 0.5 + (i % 2) * 4.8;
-        const y = 1.5 + Math.floor(i / 2) * 1.1;
-        s2.addShape('roundRect', { x, y, w: 4.2, h: 0.9, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB', pt: 1 } });
-        s2.addText(m[0], { x: x + 0.2, y: y + 0.1, w: 3.8, h: 0.3, fontSize: 9, color: PPT_COLORS.gray });
-        s2.addText(m[1], { x: x + 0.2, y: y + 0.4, w: 3.8, h: 0.4, fontSize: 20, bold: true, color: PPT_COLORS.dark });
+    pptxMetricCard(s2, 0.5,  1.35, 'Dotación Total',    String(stats.totalDot),              PPT_COLORS.copperDark);
+    pptxMetricCard(s2, 5.15, 1.35, 'Total Realizados',  String(stats.totalReal),             PPT_COLORS.green);
+    pptxMetricCard(s2, 0.5,  2.55, 'Total Pendientes',  String(stats.totalPend),            PPT_COLORS.red);
+    pptxMetricCard(s2, 5.15, 2.55, 'Avance Promedio',   `${stats.globalPct}%`,               PPT_COLORS.teal);
+
+    pptxSectionBox(s2, 0.5, 3.85, 4.2, 1.05, 'Avance por Curso Obligatorio', PPT_COLORS.copperDark);
+    pptxProgressBarPro(s2, 'Primeros Auxilios',      stats.c1Pct, PPT_COLORS.course1, 4.15, 0.65, 3.5);
+    pptxProgressBarPro(s2, 'Uso de Extintores',     stats.c2Pct, PPT_COLORS.course2, 4.55, 0.65, 3.5);
+    pptxProgressBarPro(s2, 'Manejo de Trauma',       stats.c3Pct, PPT_COLORS.course3, 4.95, 0.65, 3.5);
+    pptxProgressBarPro(s2, 'Sustancias Peligrosas',  stats.c4Pct, PPT_COLORS.course4, 5.35, 0.65, 3.5);
+
+    pptxSectionBox(s2, 5.0, 3.85, 4.5, 1.05, 'Meta Corporativa', PPT_COLORS.teal);
+    s2.addText('100% de la dotación capacitada en los 4 cursos obligatorios.', {
+        x: 5.2, y: 4.2, w: 4.1, h: 0.5, fontSize: 9, color: PPT_COLORS.gray, fontFace: PPT_FONT
+    });
+    s2.addText('Faena Segura', {
+        x: 5.2, y: 4.65, w: 4.1, h: 0.25, fontSize: 10, bold: true, color: PPT_COLORS.green, fontFace: PPT_FONT
     });
 
-    addProgressBar(s2, 'Primeros Auxilios', stats.c1Pct, PPT_COLORS.copper, 3.8);
-    addProgressBar(s2, 'Uso de Extintores', stats.c2Pct, PPT_COLORS.teal, 4.3);
-    addProgressBar(s2, 'Manejo de Trauma', stats.c3Pct, PPT_COLORS.copperLight, 4.8);
-    addProgressBar(s2, 'Sustancias Peligrosas', stats.c4Pct, PPT_COLORS.gray, 5.3);
-
-    // ── DIAPOSITIVA 3: Tabla empresas 1-12 ──
-    let s3 = pptx.addSlide();
-    s3.background = { color: PPT_COLORS.white };
-    pptxHeader(s3, 'Control de Cumplimiento (1 - 12)', 'Sotramin a Amffal — Realizados / Dotación (%)');
-    s3.addTable(buildTableRows(1, 12), {
-        x: 0.3, y: 1.4, w: 9.4,
-        colW: [1.8, 0.6, 1.5, 1.5, 1.5, 1.5],
-        fontSize: 7, border: { pt: 0.5, color: 'E5E7EB' }, autoPage: false
-    });
-
-    // ── DIAPOSITIVA 4: Tabla empresas 13-24 ──
-    let s4 = pptx.addSlide();
-    s4.background = { color: PPT_COLORS.white };
-    pptxHeader(s4, 'Control de Cumplimiento (13 - 24)', 'Pillado a Franke — Realizados / Dotación (%)');
-    s4.addTable(buildTableRows(13, 24), {
-        x: 0.3, y: 1.4, w: 9.4,
-        colW: [1.8, 0.6, 1.5, 1.5, 1.5, 1.5],
-        fontSize: 7, border: { pt: 0.5, color: 'E5E7EB' }
-    });
-
-// — DIAPOSITIVAS 5, 6, 7: Registros Fotográficos Premium —
-const slideTitles = {
-    5: { t: 'Registro Fotográfico - Combate contra Incendios', s: 'Curso: Uso y Manejo Práctico de Extintores Portátiles en Terreno - Faena Franke' },
-    6: { t: 'Registro Fotográfico - Primeros Auxilios', s: 'Curso: Técnicas de Reanimación y Soporte Vital Básico en Faena' },
-    7: { t: 'Registro Fotográfico - Trauma y Sustancias Peligrosas', s: 'Curso: Respuesta ante Emergencias Químicas y Manejo de Pacientes Politraumatizados' }
-};
-
-[5, 6, 7].forEach(slideId => {
-    let s = pptx.addSlide();
-    s.background = { color: PPT_COLORS.white }; // Fondo limpio de diapositiva
-    
-    // 1. Encabezado institucional estilizado
-    pptxHeader(s, slideTitles[slideId].t, slideTitles[slideId].s);
-
-    // 2. Configuración de la grilla 3x2 (Ajustada milimétricamente)
-    const startX = 0.5;
-    const startY = 1.4;
-    const cardW = 2.9;
-    const cardH = 2.4;
-    const gapX = 0.3;
-    const gapY = 0.3;
-
-    GALLERY_PHOTOS[slideId].forEach((_, index) => {
-        const row = Math.floor(index / 3);
-        const col = index % 3;
-        
-        const xPos = startX + col * (cardW + gapX);
-        const yPos = startY + row * (cardH + gapY);
-
-        const photoData = getPhotoData(slideId, index);
-
-        // A. Tarjeta contenedora con esquinas redondeadas y fondo suave
-        s.addShape('roundRect', { 
-            x: xPos, y: yPos, w: cardW, h: cardH, 
-            fill: { color: 'F8FAFC' }, 
-            line: { color: 'E2E8F0', width: 1 } 
-        });
-
-        // B. Contenedor interno para la imagen (Efecto marco)
-        const imgX = xPos + 0.15;
-        const imgY = yPos + 0.15;
-        const imgW = cardW - 0.3;
-        const imgH = cardH - 1.0;
-
-        if (photoData.src && !photoData.src.includes('placeholder.co')) {
-            // Si hay una foto real cargada
-            s.addImage({
-                path: photoData.src,
-                x: imgX, y: imgY, w: imgW, h: imgH,
-                sizing: { type: 'cover' }
-            });
-        } else {
-            // Marcador de posición elegante (Adiós al "[Sin foto]" horrible)
-            s.addShape('rect', { 
-                x: imgX, y: imgY, w: imgW, h: imgH, 
-                fill: { color: 'E2E8F0' } 
-            });
-            s.addText('📷 Foto Pendiente', {
-                x: imgX, y: imgY, w: imgW, h: imgH,
-                fontSize: 10, bold: true, color: '94A3B8',
-                align: 'center', valign: 'middle'
-            });
-        }
-
-        // C. Título de la actividad (Texto destacado)
-        s.addText(photoData.title || `Foto ${index + 1}`, {
-            x: xPos + 0.15, y: yPos + cardH - 0.75, w: cardW - 0.3, h: 0.3,
-            fontSize: 10, bold: true, color: PPT_COLORS.dark,
-            valign: 'middle'
-        });
-
-        // D. Descripción corta de la actividad (Texto secundario)
-        s.addText(photoData.desc || 'Descripción de la actividad.', {
-            x: xPos + 0.15, y: yPos + cardH - 0.45, w: cardW - 0.3, h: 0.35,
-            fontSize: 8, color: PPT_COLORS.gray,
-            valign: 'top'
+    // ── SLIDES 3 y 4: Tablas ──
+    [3, 4].forEach((num, idx) => {
+        const from = idx === 0 ? 1 : 13;
+        const to   = idx === 0 ? 12 : 24;
+        const sub  = idx === 0 ? 'Sotramin a Amffal — Realizados / Dotación (%)' : 'Pillado a Franke — Realizados / Dotación (%)';
+        const slide = pptx.addSlide();
+        slide.background = { color: PPT_COLORS.bgWarm };
+        pptxHeader(slide, `Control de Cumplimiento (${from} - ${to})`, sub, num);
+        slide.addTable(buildTableRows(from, to), {
+            x: 0.35, y: 1.35, w: 9.3,
+            colW: [2.0, 0.55, 1.45, 1.45, 1.45, 1.45],
+            fontSize: 7,
+            border: { pt: 0.5, color: PPT_COLORS.border },
+            autoPage: false
         });
     });
-});
 
-    // ── DIAPOSITIVA 8: Plan de acción ──
+    // ── SLIDES 5, 6, 7: Galería fotográfica ──
+    await addGallerySlideToPptx(pptx, 5, 5);
+    await addGallerySlideToPptx(pptx, 6, 6);
+    await addGallerySlideToPptx(pptx, 7, 7);
+
+    // ── SLIDE 8: Plan de acción ──
     let s8 = pptx.addSlide();
-    s8.background = { color: PPT_COLORS.white };
-    pptxHeader(s8, 'Plan de Acción y Conclusiones Generales', 'Próximos hitos del programa integrado de capacitación 2026');
+    s8.background = { color: PPT_COLORS.bgWarm };
+    pptxHeader(s8, 'Plan de Acción y Conclusiones Generales', 'Próximos hitos del programa integrado de capacitación 2026', 8);
 
-    s8.addText('Prioridades Inmediatas', {
-        x: 0.5, y: 1.4, w: 4.3, h: 0.35, fontSize: 12, bold: true, color: PPT_COLORS.copper
-    });
+    pptxSectionBox(s8, 0.5, 1.35, 4.4, 3.2, 'Prioridades Inmediatas', PPT_COLORS.copperDark);
     s8.addText([
-        { text: '• Empresas con avance cero: Verasay, Diexa y Transver — agendar cursos prácticos de inmediato.\n', options: { bullet: false, fontSize: 9 } },
-        { text: '• Programa Franke: mayor dotación (129 operarios) — priorizar Sustancias Peligrosas.\n', options: { bullet: false, fontSize: 9 } },
-        { text: '• Homologación interna: validar certificados ACHS, SASER y Adecco.', options: { bullet: false, fontSize: 9 } }
-    ], { x: 0.5, y: 1.8, w: 4.3, h: 2.5, color: PPT_COLORS.dark, valign: 'top' });
+        { text: 'Empresas con avance cero: Verasay, Diexa y Transver — agendar cursos prácticos de inmediato.\n', options: { bullet: { type: 'number' }, fontSize: 9, paraSpaceAfter: 6 } },
+        { text: 'Programa Franke: mayor dotación (129 operarios) — priorizar Sustancias Peligrosas.\n', options: { bullet: { type: 'number' }, fontSize: 9, paraSpaceAfter: 6 } },
+        { text: 'Homologación interna: validar certificados ACHS, SASER y Adecco.', options: { bullet: { type: 'number' }, fontSize: 9 } }
+    ], { x: 0.7, y: 1.75, w: 4.0, h: 2.5, color: PPT_COLORS.dark, fontFace: PPT_FONT, valign: 'top' });
 
-    s8.addShape('roundRect', { x: 5.2, y: 1.4, w: 4.3, h: 2.8, fill: { color: PPT_COLORS.bg }, line: { color: 'E5E7EB' } });
-    s8.addText('Consolidado Final', { x: 5.4, y: 1.55, w: 4, h: 0.3, fontSize: 12, bold: true, color: PPT_COLORS.dark });
-    s8.addText(
-        `Avance global: ${stats.globalPct}%\nDotación: ${stats.totalDot} | Realizados: ${stats.totalReal} | Pendientes: ${stats.totalPend}\n\nInforme auditable ante Dirección del Trabajo y Sernageomin.`,
-        { x: 5.4, y: 2.0, w: 3.9, h: 2.0, fontSize: 10, color: PPT_COLORS.gray }
-    );
-
-    s8.addText('Mina Las Cenizas | Depto. de Prevención de Riesgos', {
-        x: 0.5, y: 5.0, w: 9, h: 0.3, fontSize: 9, color: PPT_COLORS.copper, align: 'center'
+    pptxSectionBox(s8, 5.1, 1.35, 4.4, 3.2, 'Consolidado Final', PPT_COLORS.teal);
+    s8.addText(`${stats.globalPct}%`, {
+        x: 5.3, y: 1.85, w: 2, h: 0.7, fontSize: 36, bold: true, color: PPT_COLORS.copperDark, fontFace: PPT_FONT
     });
-
-    // Descargar archivo .pptx
-    await pptx.writeFile({ fileName: 'Capacitacion_Contratistas_Las_Cenizas_2026.pptx' });
-}
+    s8.addText('Avance Global', {
+        x: 5.3, y: 2.45, w: 2, h: 0.25, fontSize: 9, color: PPT_COLORS.gray, fontFace: PPT_FONT
+    });
+    s8.addText(
+        `Dotación: ${stats.totalDot}  |  Realizados: ${stats.totalReal}  |  Pendientes: ${stats.totalPend}\n\nInforme auditable ante Dirección del Trabajo y Sernageomin.`,
+        { x: 5.3, y: 2.85, w: 4.0, h: 1.4, fontSize: 9, color: PPT_COLORS.gray, fontFace: PPT_FONT }
+    );
+    // Sello corporativo (inspirado en .seal-container)
+    s8.addShape('ellipse', {
+        x: 7.6, y: 1.75, w: 1.6, h: 1.6,
+        fill: { color: PPT_COLORS.amberBg },
+        line: { color: PPT_COLORS.copperDark, pt: 2, dashType: 'sysDot' }
+    });
+    s8.addText('FAENA\nSEGURA', {
+        x: 7.6, y: 2.05, w: 1.6, h: 1.0,
+        fontSize: 11, bold: true, color: PPT_COLORS.copperDark, align: 'center', fontFace: PPT_FONT
+    });
+    
         // Inicialización de la aplicación al cargar
         window.onload = function() {
             renderTables();

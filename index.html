@@ -286,14 +286,14 @@
                 <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
                     <div class="p-3 bg-green-50 rounded-lg text-green-600 text-2xl"><i class="fa-solid fa-circle-check"></i></div>
                     <div>
-                        <p class="text-xs font-semibold text-gray-400 uppercase">Total Realizados</p>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Capacitaciones Realizadas</p>
                         <p id="stat-total-realizados" class="text-2xl font-bold text-gray-800">0</p>
                     </div>
                 </div>
                 <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center space-x-4">
                     <div class="p-3 bg-red-50 rounded-lg text-red-600 text-2xl"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     <div>
-                        <p class="text-xs font-semibold text-gray-400 uppercase">Total Pendientes</p>
+                        <p class="text-xs font-semibold text-gray-400 uppercase">Capacitaciones Pendientes</p>
                         <p id="stat-total-pendientes" class="text-2xl font-bold text-gray-800">0</p>
                     </div>
                 </div>
@@ -1683,86 +1683,111 @@ async function exportarPowerPoint() {
     // Aseguramos que la variable fecha esté disponible
     const fecha = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'long', year: 'numeric' });
 
-    // ── SLIDE 1: Portada Ejecutiva V2 (Definitiva) ──
+    // ── SLIDE 1: Portada Corporativa (Réplica de la Web) ──
     let s1 = pptx.addSlide();
-    s1.background = { color: PPT_COLORS.white };
+    s1.background = { color: PPT_COLORS.bgWarm };
 
-    // 1. CONFIDENCIAL (Esquina superior derecha)
-    s1.addText('CONFIDENCIAL · Uso Interno', {
-        x: 8.5, y: 0.3, w: 4.0, h: 0.3,
-        fontSize: 9, color: PPT_COLORS.gray, align: 'right', fontFace: PPT_FONT
-    });
+    // ═════════════════════════════════════════════════════════
+    // CONFIGURACIÓN DE LOGOS (Centralizado para fácil modificación)
+    // ══════════════════════════════════════════════════════════
+    const LOGO_PATH = 'Captura de pantalla 2026-06-15 181548.png';
+    // Futuro: const LOGO_PATH = 'logo-las-cenizas.png';
 
-    // 2. Identidad Institucional
-    s1.addText('GRUPO MINERO', {
-        x: 1.0, y: 0.8, w: 8.0, h: 0.2,
-        fontSize: 10, bold: true, color: PPT_COLORS.gray, charSpacing: 3, fontFace: PPT_FONT
-    });
-    s1.addText('LAS CENIZAS', {
-        x: 1.0, y: 1.0, w: 8.0, h: 0.4,
-        fontSize: 19, bold: true, color: PPT_COLORS.copperDark, fontFace: PPT_FONT_DISPLAY
-    });
+    // ═════════════════════════════════════════════════════════
+    // ENCABEZADO SUPERIOR (Réplica del header web)
+    // ══════════════════════════════════════════════════════════
 
-    // 3. Línea divisoria (Ahora usando 'line' como solicitado)
-    s1.addShape('line', {
-        x: 1.0, y: 1.6, w: 8.0, h: 0,
-        line: { color: PPT_COLORS.copperPrimary, pt: 1 }
-    });
-
-    // 4. Título Principal (36pt, dos líneas)
-    s1.addText('Cumplimiento del\nPrograma de Capacitación', {
-        x: 1.0, y: 2.15, w: 8.0, h: 1.0,
-        fontSize: 36, bold: true, color: PPT_COLORS.dark, fontFace: PPT_FONT_DISPLAY
-    });
-
-    // 5. Subtítulo (Dos líneas, 14pt)
-    s1.addText('Empresas Colaboradoras\nAño 2026', {
-        x: 1.0, y: 3.2, w: 8.0, h: 0.6,
-        fontSize: 14, color: PPT_COLORS.gray, fontFace: PPT_FONT
-    });
-
-    // 6. Tarjeta Institucional (Sin borde, solo sombra sutil)
-    s1.addShape('roundRect', {
-        x: 1.0, y: 3.85, w: 5.0, h: 1.2,
-        fill: { color: PPT_COLORS.white },
-        rectRadius: 0.1,
-        shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.04 }
-    });
-
-    // 7. Texto Descriptivo
-    s1.addText('Estado consolidado del cumplimiento del Programa de Capacitación Obligatoria de las empresas colaboradoras del Grupo Minero Las Cenizas.', {
-        x: 1.2, y: 4.05, w: 4.6, h: 0.8,
-        fontSize: 11, color: PPT_COLORS.dark, fontFace: PPT_FONT
-    });
-
-    // 8. Fecha de actualización (Dinámica)
-    s1.addText('Fecha de actualización', {
-        x: 1.0, y: 5.5, w: 3.0, h: 0.2,
-        fontSize: 8, bold: true, color: PPT_COLORS.grayLight, fontFace: PPT_FONT
-    });
-    s1.addText(fecha, {
-        x: 1.0, y: 5.65, w: 3.0, h: 0.25,
-        fontSize: 10, color: PPT_COLORS.dark, fontFace: PPT_FONT
-    });
-
-    // 9. Bloque Documental (Compacto)
-    s1.addText('Documento: Informe Ejecutivo | Versión: 1.0 | Período: 2026', {
-        x: 1.0, y: 6.2, w: 5.0, h: 0.2,
-        fontSize: 7, color: PPT_COLORS.gray, fontFace: PPT_FONT
-    });
-
-    // 10. Nota Técnica y Firma
-    s1.addText('Reporte generado automáticamente por el Sistema de Gestión de Capacitaciones.', {
-        x: 7.0, y: 6.45, w: 5.5, h: 0.2,
-        fontSize: 7, italic: true, color: PPT_COLORS.grayLight, align: 'right', fontFace: PPT_FONT
-    });
+    // Rectángulo blanco de fondo para el encabezado (separación visual como en la web)
     s1.addShape('rect', {
-        x: 7.0, y: 6.65, w: 5.5, h: 0.01,
-        fill: { color: PPT_COLORS.grayLight }
+        x: 0, y: 0, w: 13.33, h: 0.66,
+        fill: { color: 'FFFFFF' }
     });
-    s1.addText('Departamento de Emergencias\nACHS Servicios', {
-        x: 7.0, y: 6.7, w: 5.5, h: 0.4,
-        fontSize: 9, color: PPT_COLORS.gray, align: 'right', fontFace: PPT_FONT
+
+    // Logo horizontal oficial completo (incluye isotipo + "GRUPO MINERO LAS CENIZAS")
+    s1.addImage({
+        path: LOGO_PATH,
+        x: 0.4, y: 0.1, w: 2.8, h: 0.5,
+        altText: 'Grupo Minero Las Cenizas'
+    });
+
+    // Texto "PRESENTACIÓN CORPORATIVA" (extremo derecho)
+    s1.addText('PRESENTACIÓN CORPORATIVA', {
+        x: 9.5, y: 0.25, w: 3.0, h: 0.2,
+        fontSize: 8, bold: true, color: PPT_COLORS.gray, align: 'right', fontFace: PPT_FONT, charSpacing: 1
+    });
+
+    // Tres cuadrados decorativos corporativos (teal, cobre oscuro, ámbar)
+    const sqSize = 0.18;
+    const sqY = 0.27;
+    s1.addShape('rect', { x: 12.6, y: sqY, w: sqSize, h: sqSize, fill: { color: PPT_COLORS.teal } });
+    s1.addShape('rect', { x: 12.82, y: sqY, w: sqSize, h: sqSize, fill: { color: PPT_COLORS.copperDark } });
+    s1.addShape('rect', { x: 13.04, y: sqY, w: sqSize, h: sqSize, fill: { color: PPT_COLORS.amber } });
+
+    // Doble línea horizontal cobre bajo el encabezado
+    s1.addShape('line', {
+        x: 0, y: 0.66, w: 13.33, h: 0,
+        line: { color: PPT_COLORS.copperDark, pt: 1.5 }
+    });
+    s1.addShape('line', {
+        x: 0, y: 0.71, w: 13.33, h: 0,
+        line: { color: PPT_COLORS.copperPrimary, pt: 0.5 }
+    });
+
+    // ══════════════════════════════════════════════════════════
+    // ZONA CENTRAL (Réplica del hero web)
+    // ══════════════════════════════════════════════════════════
+
+    // Recuadro blanco con sombra suave para el logo principal (aumentado ~15%)
+    s1.addShape('roundRect', {
+        x: 4.16, y: 1.3, w: 5.0, h: 2.0,
+        fill: { color: 'FFFFFF' },
+        rectRadius: 0.15,
+        shadow: { type: 'outer', blur: 8, offset: 2, color: '000000', opacity: 0.08 }
+    });
+
+    // Logo principal corporativo central
+    s1.addImage({
+        path: LOGO_PATH,
+        x: 4.36, y: 1.5, w: 4.6, h: 1.6,
+        altText: 'Grupo Minero Las Cenizas - Logo Principal'
+    });
+
+    // Texto superior: REPORTE DE CAPACITACIÓN 2026
+    s1.addText('REPORTE DE CAPACITACIÓN 2026', {
+        x: 2.0, y: 3.6, w: 9.33, h: 0.3,
+        fontSize: 10, bold: true, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT, charSpacing: 2
+    });
+
+    // Título principal: Cumplimiento de Cursos Obligatorios
+    s1.addText('Cumplimiento de Cursos Obligatorios', {
+        x: 1.5, y: 4.0, w: 10.33, h: 0.9,
+        fontSize: 36, bold: true, color: PPT_COLORS.dark, align: 'center', fontFace: PPT_FONT_DISPLAY
+    });
+
+    // Subtítulo descriptivo (sin lineSpacingMultiple, con margin: 0)
+    s1.addText('Seguimiento y avance de dotación entrenada en Seguridad, Salud Ocupacional y Manejo de Emergencias para Empresas Colaboradoras.', {
+        x: 2.5, y: 4.95, w: 8.33, h: 0.5,
+        fontSize: 11, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT, margin: 0
+    });
+
+    // Línea separadora sutil (como en la web)
+    s1.addShape('line', {
+        x: 5.5, y: 5.55, w: 2.33, h: 0,
+        line: { color: PPT_COLORS.border, pt: 0.5 }
+    });
+
+    // ═════════════════════════════════════════════════════════
+    // PIE DE PÁGINA (Estilo corporativo del PPT)
+    // ══════════════════════════════════════════════════════════
+
+    s1.addText('Departamento de Emergencias · Grupo Minero Las Cenizas', {
+        x: 0.4, y: 7.22, w: 10.0, h: 0.2,
+        fontSize: 7, color: PPT_COLORS.grayLight, align: 'left', fontFace: PPT_FONT
+    });
+
+    s1.addText('01 | 08', {
+        x: 11.5, y: 7.22, w: 1.4, h: 0.2,
+        fontSize: 7, color: PPT_COLORS.gray, align: 'right', fontFace: PPT_FONT
     });
 
     // ── SLIDE 2: Dashboard Ejecutivo V3 (Power BI Style) ──
@@ -1807,73 +1832,77 @@ async function exportarPowerPoint() {
         fontSize: 8, italic: true, color: PPT_COLORS.grayLight, fontFace: PPT_FONT
     });
 
-    // ── KPIs SECUNDARIOS (3 tarjetas con mayor altura y subtítulos) ──
-    const kpiY = 1.4;
-    const kpiH = 0.85;  // Altura aumentada para que respire
-    const kpiW = 2.4;
-    const kpiX1 = 5.8;
-    const kpiX2 = 8.35;
-    const kpiX3 = 10.9;
+// ── KPIs SECUNDARIOS (3 tarjetas con mayor altura y subtítulos) ─
+const kpiY = 1.4;
+const kpiH = 0.85;
+const kpiW = 2.4;
+const kpiX1 = 5.8;
+const kpiX2 = 8.35;
+const kpiX3 = 10.9;
 
-    // Tarjeta 1: DOTACIÓN
-    s2.addShape('roundRect', {
-        x: kpiX1, y: kpiY, w: kpiW, h: kpiH,
-        fill: { color: PPT_COLORS.white },
-        rectRadius: 0.08,
-        shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
-    });
-    s2.addText('DOTACIÓN', {
-        x: kpiX1, y: kpiY + 0.08, w: kpiW, h: 0.15,
-        fontSize: 8, bold: true, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText('Personal registrado', {
-        x: kpiX1, y: kpiY + 0.23, w: kpiW, h: 0.15,
-        fontSize: 7, italic: true, color: PPT_COLORS.grayLight, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText(String(stats.totalDot), {
-        x: kpiX1, y: kpiY + 0.42, w: kpiW, h: 0.35,
-        fontSize: 22, bold: true, color: PPT_COLORS.dark, align: 'center', fontFace: PPT_FONT_DISPLAY
-    });
+// Tarjeta 1: DOTACIÓN
+s2.addShape('roundRect', {
+    x: kpiX1, y: kpiY, w: kpiW, h: kpiH,
+    fill: { color: PPT_COLORS.white },
+    rectRadius: 0.08,
+    shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
+});
+s2.addText('DOTACIÓN', {
+    x: kpiX1, y: kpiY + 0.08, w: kpiW, h: 0.15,
+    fontSize: 8, bold: true, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT
+});
+s2.addText('Personal registrado', {
+    x: kpiX1, y: kpiY + 0.23, w: kpiW, h: 0.15,
+    fontSize: 7, italic: true, color: PPT_COLORS.grayLight, align: 'center', fontFace: PPT_FONT
+});
+s2.addText(String(stats.totalDot), {
+    x: kpiX1, y: kpiY + 0.42, w: kpiW, h: 0.35,
+    fontSize: 22, bold: true, color: PPT_COLORS.dark, align: 'center', fontFace: PPT_FONT_DISPLAY
+});
 
-    // Tarjeta 2: CAPACITADOS
-    s2.addShape('roundRect', {
-        x: kpiX2, y: kpiY, w: kpiW, h: kpiH,
-        fill: { color: PPT_COLORS.white },
-        rectRadius: 0.08,
-        shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
-    });
-    s2.addText('CAPACITADOS', {
-        x: kpiX2, y: kpiY + 0.08, w: kpiW, h: 0.15,
-        fontSize: 8, bold: true, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText('Cursos completados', {
-        x: kpiX2, y: kpiY + 0.23, w: kpiW, h: 0.15,
-        fontSize: 7, italic: true, color: PPT_COLORS.grayLight, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText(String(stats.totalReal), {
-        x: kpiX2, y: kpiY + 0.42, w: kpiW, h: 0.35,
-        fontSize: 22, bold: true, color: PPT_COLORS.green, align: 'center', fontFace: PPT_FONT_DISPLAY
-    });
+// Tarjeta 2: CAPACITACIONES REALIZADAS (CAMBIO)
+s2.addShape('roundRect', {
+    x: kpiX2, y: kpiY, w: kpiW, h: kpiH,
+    fill: { color: PPT_COLORS.white },
+    rectRadius: 0.08,
+    shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
+});
+s2.addText('COMPLETADAS', {
+    x: kpiX2, y: kpiY + 0.08, w: kpiW, h: 0.15,
+    fontSize: 8, bold: true, color: PPT_COLORS.gray,
+    align: 'center', fontFace: PPT_FONT
+});
+s2.addText('Capacitaciones realizadas', {
+    x: kpiX2, y: kpiY + 0.23, w: kpiW, h: 0.15,
+    fontSize: 7, italic: true, color: PPT_COLORS.grayLight,
+    align: 'center', fontFace: PPT_FONT
+});
+s2.addText(String(stats.totalReal), {
+    x: kpiX2, y: kpiY + 0.42, w: kpiW, h: 0.35,
+    fontSize: 22, bold: true, color: PPT_COLORS.green, align: 'center', fontFace: PPT_FONT_DISPLAY
+});
 
-    // Tarjeta 3: PENDIENTES
-    s2.addShape('roundRect', {
-        x: kpiX3, y: kpiY, w: kpiW, h: kpiH,
-        fill: { color: PPT_COLORS.white },
-        rectRadius: 0.08,
-        shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
-    });
-    s2.addText('PENDIENTES', {
-        x: kpiX3, y: kpiY + 0.08, w: kpiW, h: 0.15,
-        fontSize: 8, bold: true, color: PPT_COLORS.gray, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText('Cursos pendientes', {
-        x: kpiX3, y: kpiY + 0.23, w: kpiW, h: 0.15,
-        fontSize: 7, italic: true, color: PPT_COLORS.grayLight, align: 'center', fontFace: PPT_FONT
-    });
-    s2.addText(String(stats.totalPend), {
-        x: kpiX3, y: kpiY + 0.42, w: kpiW, h: 0.35,
-        fontSize: 22, bold: true, color: PPT_COLORS.red, align: 'center', fontFace: PPT_FONT_DISPLAY
-    });
+// Tarjeta 3: CAPACITACIONES PENDIENTES (CAMBIO)
+s2.addShape('roundRect', {
+    x: kpiX3, y: kpiY, w: kpiW, h: kpiH,
+    fill: { color: PPT_COLORS.white },
+    rectRadius: 0.08,
+    shadow: { type: 'outer', blur: 3, offset: 1, color: '000000', opacity: 0.05 }
+});
+s2.addText('PENDIENTES', {
+    x: kpiX3, y: kpiY + 0.08, w: kpiW, h: 0.15,
+    fontSize: 8, bold: true, color: PPT_COLORS.gray,
+    align: 'center', fontFace: PPT_FONT
+});
+s2.addText('Capacitaciones por ejecutar', {
+    x: kpiX3, y: kpiY + 0.23, w: kpiW, h: 0.15,
+    fontSize: 7, italic: true, color: PPT_COLORS.grayLight,
+    align: 'center', fontFace: PPT_FONT
+});
+s2.addText(String(stats.totalPend), {
+    x: kpiX3, y: kpiY + 0.42, w: kpiW, h: 0.35,
+    fontSize: 22, bold: true, color: PPT_COLORS.red, align: 'center', fontFace: PPT_FONT_DISPLAY
+});
 
     // ── AVANCE POR CURSO (Barras gruesas estilo Power BI) ──
     const cursoY = 3.4;
